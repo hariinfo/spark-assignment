@@ -5,12 +5,16 @@ import scala.concurrent.duration._
 import org.scalatest.BeforeAndAfterEach
 import org.scalatest.funsuite.AnyFunSuite
 import org.scalatest.matchers.must.Matchers
-import com.spark.assignment1.Airline
+import com.spark.assignment1.US
 import com.spark.assignment1.Assignment2
 
 class Assignment2Test extends AnyFunSuite with Matchers with BeforeAndAfterEach {
 
-  val AIRLINE_DATA_CSV_PATH = "data/On_Time_Reporting_Carrier_On_Time_Performance_(1987_present)_2019_1.csv"
+  val US_CONFIRMED_DATA_CSV_PATH = "data/time_series_covid19_confirmed_US.csv"
+  val US_DEATH_DATA_CSV_PATH = "data/time_series_covid19_deaths_US.csv"
+  val GLOBAL_CONFIRMED_DATA_CSV_PATH = "data/time_series_covid19_confirmed_global.csv"
+  val GLOBAL_DEATH_DATA_CSV_PATH = "data/time_series_covid19_deaths_global.csv"
+
   val BLOCK_ON_COMPLETION = false;
 
   /**
@@ -28,10 +32,10 @@ class Assignment2Test extends AnyFunSuite with Matchers with BeforeAndAfterEach 
   val csvReadOptions =
     Map("inferSchema" -> true.toString, "header" -> true.toString)
 
-  implicit val tripEncoder: Encoder[Airline] = Encoders.product[Airline]
+  implicit val tripEncoder: Encoder[US] = Encoders.product[US]
 
-  def airlineDataDS: Dataset[Airline] = spark.read.options(csvReadOptions).csv(AIRLINE_DATA_CSV_PATH).as[Airline]
-  def airlineDataDF: DataFrame = airlineDataDS.toDF()
+  def usConfirmedDS: Dataset[US] = spark.read.options(csvReadOptions).csv(US_CONFIRMED_DATA_CSV_PATH).as[US]
+  def usConfirmedDataDF: DataFrame = usConfirmedDS.toDF()
 
   /**
     * Keep the Spark Context running so the Spark UI can be viewed after the test has completed.
@@ -48,11 +52,9 @@ class Assignment2Test extends AnyFunSuite with Matchers with BeforeAndAfterEach 
     *
     */
   test("Select count") {
-    Assignment2.Problem1(airlineDataDF) must equal(149033)
+    Assignment2.Problem1(usConfirmedDataDF) must equal(3253)
   }
 
-  test("average, min, max delays") {
-    Assignment2.Problem2(airlineDataDF) must equal(13)
-  }
+
 
 }

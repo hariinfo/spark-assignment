@@ -11,9 +11,7 @@ object Assignment2 {
   }
 
   def Problem2(airlineData: DataFrame): Long = {
-    val data =  airlineData.groupBy("ArrDel15").avg()
-    data.describe("ArrDel15").show()
-
+    val data =  airlineData.groupBy("Flight_Number_Reporting_Airline").max("")
     return 1
   }
 }

@@ -48,7 +48,7 @@ class Assignment2Test extends AnyFunSuite with Matchers with BeforeAndAfterEach 
     *
     */
   test("Select count") {
-    Assignment2.Problem1(airlineDataDF) must equal(583985)
+    Assignment2.Problem1(airlineDataDF) must equal(149033)
   }
 
   test("average, min, max delays") {

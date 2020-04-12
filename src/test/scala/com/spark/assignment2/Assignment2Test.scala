@@ -1,4 +1,4 @@
-package com.spark.assignment2.Assignment2Test
+package com.spark.assignment2
 
 import org.apache.spark.sql.{DataFrame, Dataset, Encoder, Encoders, SparkSession}
 import scala.concurrent.duration._

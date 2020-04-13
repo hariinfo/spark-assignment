@@ -1,14 +1,17 @@
 # Spark Assignment
+Airline on-time Performance Analysis
 
 ## Project Overview
-According to the US Federal Aviation Administration (FAA), a flight is considered delayed when it arrives 15 minutes later than its scheduled time. Unfortunately, since there are no clear guidelines on how and when passengers get compensated in the event of delays, it is left to the discretion of the respective airlines on how they deal with it. With large amounts of flight performance data made publicly available, the article postulates that data analytics could help address such challenges.
+According to the US Federal Aviation Administration (FAA), a flight is considered delayed when it arrives 15 minutes later than its scheduled time. 
+With large amounts of flight performance data made publicly available, the assignment postulates that spark data analytics could help gain analytical insight into the causes, trends and comparisons associated with flight delays.
+I intend to use only a smaller set of data for this assignment due to the git file size limit. However, the overall dataset for a year is close to 3 GB and hence this is an interesting analytical problem to be solved at scale using Spark analytics.
 
 ## Data Overview
 Several data sources shall be used for this project. The primary dataset regarding on-time flight performance is from Bureau of Transportation Statistics (BTS). Yahoo finance, Kaggle, and Statistical computing are few other sources of information to augment the primary data set.
 
 | Dataset Source        | Description           | Format  | Size (rows, columns, file size)|
 | ------------- |:-------------:| -----:|-----:|
-| www.transtats.bts.gov      | This is the primary dataset: On time flight performance for 2017 | CSV |5475253, 110, 2.38 GB |
+| www.transtats.bts.gov      | This is the primary dataset: On time flight performance for 2017 | CSV |149033, 110, 39MB |
 | http://stat-computing.org/dataexpo/2009/plane-data.csv      | Plane Data      |   CSV |5029, 9, 420 KB |
 | http://stat-computing.org/dataexpo/2009/carriers.csv | Aircraft carrier      |    CSV |1491, 2, 44 KB |
 

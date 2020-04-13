@@ -10,7 +10,7 @@ import com.spark.assignment1.Assignment2
 
 class Assignment2Test extends AnyFunSuite with Matchers with BeforeAndAfterEach {
 
-  val AIRLINE_DATA_CSV_PATH = "data/time_series_covid19_confirmed_US.csv"
+  val AIRLINE_DATA_CSV_PATH = "data/airline_performance.csv"
 
   val BLOCK_ON_COMPLETION = false;
 
@@ -49,7 +49,7 @@ class Assignment2Test extends AnyFunSuite with Matchers with BeforeAndAfterEach 
     *
     */
   test("Select count") {
-    Assignment2.Problem1(airlineDataDF) must equal(3253)
+    Assignment2.Problem1(airlineDataDF) must equal(149033)
   }
 
 

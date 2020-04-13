@@ -29,7 +29,8 @@ Filter airlineDataDF by delay type and count by each delay type and then use the
 I will make use of filter(..) by column and count() functions of dataframe for this implementation.
 
 ### What is the min/max/average delays for an airline in a month and year?
-Group by multiple columns such as airline type, month or year and then apply aggregation function to calculate min,max, and average
+Group by multiple columns such as airline type, month or year and then apply aggregation function to calculate min,max, and average<br/>
+I will make use of groupBy(..,..) delay type and month/year columns and agg(..) shall be used to generate min, max, average stats.
 
 ### Did privately managed airlines perform better than publicly traded ones?
 Reporting_Airline from airline performance dataframe should be used to join with carriers dataframe.
@@ -42,7 +43,7 @@ groupBy(..,..) shall be used to group the records based on multiple columns and 
 agg(..) shall be used to generate min, max, average stats.
 
 ### What delay type is most common at each airport?
-group by airport and delay type
+Filter airlineDataDF by airport and then group by delay type to count delay types for each airport
 
 ### Did airlines with modernized fleet perform better?
 Aircraft tail number (Tail_Number) should be used to join the two data sets across airline performance and plane-data

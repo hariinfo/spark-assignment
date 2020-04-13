@@ -24,6 +24,9 @@ planeDataDF - Represents the dataframe created from plane csv<br/>
 Methods indicated in the analytical questions are from this spark API
 https://spark.apache.org/docs/2.4.5/api/scala/index.html#org.apache.spark.sql.Dataset
 
+There are about 118 columns in the original csv. However, not all is required for the analysis and most of them have null values.
+We will have to do some data cleansing by dropping columns.
+
 ### What is the percentage delay types by total delays?
 Filter airlineDataDF by delay type and count by each delay type and then use the count of total delays to arrive at the percentage breakdown <br/>
 I will make use of filter(..) by column and count() functions of dataframe for this implementation.
@@ -44,14 +47,13 @@ agg(..) shall be used to generate min, max, average stats.
 
 ### What delay type is most common at each airport?
 Filter airlineDataDF by airport and then group by delay type to count delay types for each airport
+I will make use of filter(..) by column and groupBy(..,..) function for this implementation.
 
 ### Did airlines with modernized fleet perform better?
 Aircraft tail number (Tail_Number) should be used to join the two data sets across airline performance and plane-data
 The combined dataframe represents the airline performance information along with the fleet details.
 I will have to come up with a classification based on the aircraft manufacturing year to categorize new vs old fleet before performing analytics
-    - def filter() - To filter the modernized fleet
-    - def join() - 
-
+filter(..) - To filter the modernized fleet and then use join(..) to combine the dataframes. 
 
 ## Code Overview
 

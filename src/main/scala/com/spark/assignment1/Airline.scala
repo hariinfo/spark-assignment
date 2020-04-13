@@ -5,6 +5,7 @@ import java.util.Date
 case class Airline(
                     Year: Long,
                     Month: Long,
+                    Tail_Number: String,
                     Reporting_Airline: String,
                     FlightDate: String,
                     OriginState: String,

@@ -26,6 +26,11 @@ Several data sources shall be used for this project. The primary dataset regardi
 ### What delay type is most common at each airport?
 
 ### Did airlines with modernized fleet perform better?
+Aircraft tail number (Tail_Number) should be used to join the two data sets across airline performance and plane-data
+The combined dataframe represents the airline performance information along with the fleet details.
+I will have to come up with a classification based on the aircraft manufacturing year to categorize new vs old fleet before performing analytics
+https://spark.apache.org/docs/2.4.5/api/scala/index.html#org.apache.spark.sql.Dataset
+    - def join(),
 
 
 ## Code Overview

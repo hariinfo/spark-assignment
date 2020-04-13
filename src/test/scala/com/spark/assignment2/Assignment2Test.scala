@@ -56,7 +56,7 @@ class Assignment2Test extends AnyFunSuite with Matchers with BeforeAndAfterEach 
     *
     */
   test("Select delay count percentage") {
-    val result = Assignment2.Problem2(airlineDataDF).toArray.toSeq
+    val result = Assignment2.Problem2(airlineDataDF).toSeq
     println(result)
     result.length must equal (5)
     result must contain (("lateAircraftDelayCount",48.255596))
@@ -66,4 +66,11 @@ class Assignment2Test extends AnyFunSuite with Matchers with BeforeAndAfterEach 
     result must contain (("securityDelayCount",0.31032535))
   }
 
+  test("min/max/average delays in a month / year") {
+    val result = Assignment2.Problem3(airlineDataDF)
+  }
+
+  test("Did airlines with modernized fleet perform better") {
+    val result = Assignment2.Problem5(airlineDataDF)
+  }
 }

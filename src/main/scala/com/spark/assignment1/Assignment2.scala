@@ -22,13 +22,22 @@ object Assignment2 {
     println(nASDelayCount.count() * 1.0f/ delaysCount.count() *100)
     println(weatherDelayCount.count() * 1.0f/ delaysCount.count() *100)
     println(carrierDelayCount.count() * 1.0f/ delaysCount.count() *100)
-    val response = Map("lateAircraftDelayCount" -> lateAircraftDelayCount.count() * 1.0f / delaysCount.count() *100,
+    //val response = Array("" -> )
+    val response = Array("lateAircraftDelayCount" -> lateAircraftDelayCount.count() * 1.0f / delaysCount.count() *100,
                       "securityDelayCount" -> securityDelayCount.count() * 1.0f/ delaysCount.count() *100,
                       "nASDelayCount" -> nASDelayCount.count() * 1.0f/ delaysCount.count() *100,
                       "weatherDelayCount" -> weatherDelayCount.count() * 1.0f/ delaysCount.count() *100,
                       "carrierDelayCount" -> carrierDelayCount.count() * 1.0f/ delaysCount.count() *100
                       )
-    println(response.toArray)
-    return response.toArray
+    println(response)
+    return response
+  }
+
+  def Problem3(airlineData: DataFrame): Array[(String, Float)] = {
+    return ???
+  }
+
+  def Problem5(airlineData: DataFrame): Array[(String, Float)] = {
+    return ???
   }
 }

@@ -16,10 +16,12 @@ Several data sources shall be used for this project. The primary dataset regardi
 ## Analytical questions
 
 ### What is the percentage delay types by total delays?
-group the data by delay type and then use the count of total delays to arrive at the percentage breakdown
+Filter the airline delays by delay type and count by each delay type and then use the count of total delays to arrive at the percentage breakdown
+I will make use of filter() by column and count() functions of dataframe for this calculation.
 
 ### What is the min/max/average delays for an airline in a month and year?
 Group by multiple columns such as airline type, month or year and then apply aggregation function to calculate min,max, and average
+
 ### Were there any specific airport with maximum delays on a given day?
 
 ### What delay type is most common at each airport?

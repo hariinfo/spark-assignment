@@ -49,14 +49,14 @@ class Assignment2Test extends AnyFunSuite with Matchers with BeforeAndAfterEach 
     *
     */
   test("Select count") {
-    Assignment2.Problem1(airlineDataDF) must equal(149033)
+    Assignment2.Problem0(airlineDataDF) must equal(149033)
   }
 
   /**
-    *
+    * What is the percentage delay types by total delays?
     */
-  test("Select delay count percentage") {
-    val result = Assignment2.Problem2(airlineDataDF).toSeq
+  test("percentage delay types by total delays") {
+    val result = Assignment2.Problem1(airlineDataDF).toSeq
     println(result)
     result.length must equal (5)
     result must contain (("lateAircraftDelayCount",48.255596))
@@ -66,11 +66,32 @@ class Assignment2Test extends AnyFunSuite with Matchers with BeforeAndAfterEach 
     result must contain (("securityDelayCount",0.31032535))
   }
 
-  test("min/max/average delays in a month / year") {
+  /**
+    * What is the min/max/average delays for an airline in a month and year?
+    */
+  test("min/max/average delays for an airline in a month and year") {
+    val result = Assignment2.Problem2(airlineDataDF)
+  }
+
+  /**
+    * Did privately managed airlines perform better than publicly traded ones?
+    */
+  test("public vs private airlines") {
     val result = Assignment2.Problem3(airlineDataDF)
   }
 
+  /**
+    * What delay type is most common at each airport?
+    */
+  test("Did airlines with modernized fleet perform better") {
+    val result = Assignment2.Problem4(airlineDataDF)
+  }
+
+  /**
+    *Did airlines with modernized fleet perform better?
+    */
   test("Did airlines with modernized fleet perform better") {
     val result = Assignment2.Problem5(airlineDataDF)
   }
+
 }

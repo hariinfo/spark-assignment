@@ -4,12 +4,12 @@ import org.apache.spark.sql.DataFrame
 
 object Assignment2 {
 
-  def Problem1(airlineData: DataFrame): Long = {
+  def Problem0(airlineData: DataFrame): Long = {
     println(airlineData.count())
     return airlineData.count()
   }
 
-  def Problem2(airlineData: DataFrame): Array[(String, Float)] = {
+  def Problem1(airlineData: DataFrame): Array[(String, Float)] = {
     val delaysCount = airlineData.filter(airlineData.col("ArrDel15").gt(0))
     val lateAircraftDelayCount = airlineData.filter(airlineData.col("LateAircraftDelay").gt(0))
     val securityDelayCount = airlineData.filter(airlineData.col("SecurityDelay").gt(0))
@@ -33,7 +33,15 @@ object Assignment2 {
     return response
   }
 
+  def Problem2(airlineData: DataFrame): Array[(String, Float)] = {
+    return ???
+  }
+
   def Problem3(airlineData: DataFrame): Array[(String, Float)] = {
+    return ???
+  }
+
+  def Problem4(airlineData: DataFrame): Array[(String, Float)] = {
     return ???
   }
 

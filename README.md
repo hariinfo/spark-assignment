@@ -17,6 +17,10 @@ Several data sources shall be used for this project. The primary dataset regardi
 
 
 ## Analytical questions
+All of the analytical questions are based on three dataframes that map to the three csv files described in the data overview section.<br/>
+airlineDataDF - Represents the dataframe created from airline performance csv <br/>
+carrierDataDF - Represents the dataframe created from carrier csv<br/>
+planeDataDF - Represents the dataframe created from plane csv<br/>
 
 ### What is the percentage delay types by total delays?
 Filter the airline delays by delay type and count by each delay type and then use the count of total delays to arrive at the percentage breakdown

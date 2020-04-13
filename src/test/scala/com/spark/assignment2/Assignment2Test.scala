@@ -6,11 +6,15 @@ import org.scalatest.BeforeAndAfterEach
 import org.scalatest.funsuite.AnyFunSuite
 import org.scalatest.matchers.must.Matchers
 import com.spark.assignment1.Airline
+import com.spark.assignment1.Carrier
+import com.spark.assignment1.Plane
 import com.spark.assignment1.Assignment2
 
 class Assignment2Test extends AnyFunSuite with Matchers with BeforeAndAfterEach {
 
   val AIRLINE_DATA_CSV_PATH = "data/airline_performance.csv"
+  val CARRIERS_DATA_CSV_PATH = "data/carrier.csv"
+  val PLANE_DATA_CSV_PATH = "data/plane-data.csv"
 
   val BLOCK_ON_COMPLETION = false;
 
@@ -29,10 +33,18 @@ class Assignment2Test extends AnyFunSuite with Matchers with BeforeAndAfterEach 
   val csvReadOptions =
     Map("inferSchema" -> true.toString, "header" -> true.toString)
 
-  implicit val tripEncoder: Encoder[Airline] = Encoders.product[Airline]
+  implicit val airlineEncoder: Encoder[Airline] = Encoders.product[Airline]
+  implicit val carrierEncoder: Encoder[Carrier] = Encoders.product[Carrier]
+  implicit val planeEncoder: Encoder[Plane] = Encoders.product[Plane]
 
   def airlineDS: Dataset[Airline] = spark.read.options(csvReadOptions).csv(AIRLINE_DATA_CSV_PATH).as[Airline]
   def airlineDataDF: DataFrame = airlineDS.toDF()
+
+  def carrierDS: Dataset[Carrier] = spark.read.options(csvReadOptions).csv(CARRIERS_DATA_CSV_PATH).as[Carrier]
+  def carrierDataDF: DataFrame = carrierDS.toDF()
+
+  def planeDS: Dataset[Plane] = spark.read.options(csvReadOptions).csv(PLANE_DATA_CSV_PATH).as[Plane]
+  def planeDataDF: DataFrame = planeDS.toDF()
 
   /**
     * Keep the Spark Context running so the Spark UI can be viewed after the test has completed.

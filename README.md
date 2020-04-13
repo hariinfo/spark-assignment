@@ -22,7 +22,14 @@ I will make use of filter() by column and count() functions of dataframe for thi
 ### What is the min/max/average delays for an airline in a month and year?
 Group by multiple columns such as airline type, month or year and then apply aggregation function to calculate min,max, and average
 
-### Were there any specific airport with maximum delays on a given day?
+### Did privately managed airlines perform better than publicly traded ones?
+Introduce a new column with a flag to indicate private/public airline.
+Group the data based on the airline code and ownership type (public/private)
+Generate the ratio of delays by public vs privately traded airlines
+
+withColumn(..) shall be used to add a new column based on certain logic to determine public/private airline
+groupBy(..,..) shall be used to group the records based on multiple columns
+agg(..) shall be used to generate min, max, average stats
 
 ### What delay type is most common at each airport?
 group by airport and delay type

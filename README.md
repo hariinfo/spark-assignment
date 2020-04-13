@@ -1,7 +1,7 @@
 # Spark Assignment
 
 ## Project Overview
-According to the US Federal Aviation Administration (FAA), a flight is considered delayed when it arrives 15 minutes later than its scheduled time. Unfortunately, since there are no clear guidelines on how and when passengers get compensated in the event of delays, it is left to the discretion of the respective airlines on how they deal with it. With large amounts of flight performance data made publicly available, the article postulates that data analytics could help address such challenges
+According to the US Federal Aviation Administration (FAA), a flight is considered delayed when it arrives 15 minutes later than its scheduled time. Unfortunately, since there are no clear guidelines on how and when passengers get compensated in the event of delays, it is left to the discretion of the respective airlines on how they deal with it. With large amounts of flight performance data made publicly available, the article postulates that data analytics could help address such challenges.
 
 ## Data Overview
 Several data sources shall be used for this project. The primary dataset regarding on-time flight performance is from Bureau of Transportation Statistics (BTS). Yahoo finance, Kaggle, and Statistical computing are few other sources of information to augment the primary data set.
@@ -23,13 +23,14 @@ I will make use of filter() by column and count() functions of dataframe for thi
 Group by multiple columns such as airline type, month or year and then apply aggregation function to calculate min,max, and average
 
 ### Did privately managed airlines perform better than publicly traded ones?
+Reporting_Airline from airline performance dataframe should be used to join with carriers dataframe.
 Introduce a new column with a flag to indicate private/public airline.
 Group the data based on the airline code and ownership type (public/private)
-Generate the ratio of delays by public vs privately traded airlines
+Generate the ratio of delays by public vs privately traded airlines.
 
 withColumn(..) shall be used to add a new column based on certain logic to determine public/private airline
-groupBy(..,..) shall be used to group the records based on multiple columns
-agg(..) shall be used to generate min, max, average stats
+groupBy(..,..) shall be used to group the records based on multiple columns and finally
+agg(..) shall be used to generate min, max, average stats.
 
 ### What delay type is most common at each airport?
 group by airport and delay type
@@ -41,7 +42,6 @@ I will have to come up with a classification based on the aircraft manufacturing
 https://spark.apache.org/docs/2.4.5/api/scala/index.html#org.apache.spark.sql.Dataset
     - def filter() - To filter the modernized fleet
     - def join() - 
-    - 
 
 
 ## Code Overview

@@ -15,11 +15,17 @@ Several data sources shall be used for this project. The primary dataset regardi
 
 ## Analytical questions
 
-### What is the percentage delay types by total delays
-### What is the min/max/average delays for an airline in a month and year
-### Were there any specific airport with maximum delays on a given day
-### What is the min/max and average time between delays by delay type on a given day
-### What delay type is most common at each airport
+### What is the percentage delay types by total delays?
+
+### What is the min/max/average delays for an airline in a month and year?
+
+### Were there any specific airport with maximum delays on a given day?
+
+### What is the min/max and average time between delays by delay type on a given day?
+
+### What delay type is most common at each airport?
+
+### Did airlines with modernized fleet perform better?
 
 
 ## Code Overview

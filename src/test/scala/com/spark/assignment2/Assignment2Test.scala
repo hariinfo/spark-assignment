@@ -1,16 +1,21 @@
 package com.spark.assignment2
 
 import org.apache.spark.sql.{DataFrame, Dataset, Encoder, Encoders, SparkSession}
+
 import scala.concurrent.duration._
 import org.scalatest.BeforeAndAfterEach
 import org.scalatest.funsuite.AnyFunSuite
 import org.scalatest.matchers.must.Matchers
+import org.scalatest.matchers.should._
+import org.apache.spark.sql.Row
 import com.spark.assignment1.Airline
 import com.spark.assignment1.Carrier
 import com.spark.assignment1.Plane
 import com.spark.assignment1.Assignment2
+import com.github.mrpowers.spark.fast.tests.DataFrameComparer
+import org.apache.spark.sql.types.{BooleanType, FloatType, IntegerType, LongType, StringType, StructField, StructType}
 
-class Assignment2Test extends AnyFunSuite with Matchers with BeforeAndAfterEach {
+class Assignment2Test extends AnyFunSuite with Matchers with BeforeAndAfterEach with DataFrameComparer {
 
   val AIRLINE_DATA_CSV_PATH = "data/airline_performance.csv"
   val CARRIERS_DATA_CSV_PATH = "data/carrier.csv"
@@ -68,21 +73,52 @@ class Assignment2Test extends AnyFunSuite with Matchers with BeforeAndAfterEach 
     * What is the percentage delay types by total delays?
     */
   test("percentage delay types by total delays") {
-    val result = Assignment2.Problem1(airlineDataDF).toSeq
-    println(result)
-    result.length must equal (5)
-    result must contain (("lateAircraftDelayCount",48.255596))
-    result must contain (("securityDelayCount",0.31032535))
-    result must contain (("weatherDelayCount",5.110965))
-    result must contain (("carrierDelayCount",52.115856))
-    result must contain (("securityDelayCount",0.31032535))
+    val responseDF = Assignment2.Problem1(airlineDataDF)
+
+
+    val expectedData = Seq(
+      Row("lateAircraftDelayCount", 48.255596F),
+      Row("securityDelayCount", 0.31032535F),
+      Row("nASDelayCount", 55.632877F),
+      Row("weatherDelayCount", 5.110965F),
+      Row("carrierDelayCount", 52.115856F)
+    )
+
+    val expectedSchema = List(
+      StructField("delayType", StringType, true),
+      StructField("count", FloatType, false)
+    )
+    val expectedDF = spark.createDataFrame(
+      spark.sparkContext.parallelize(expectedData),
+      StructType(expectedSchema)
+    )
+
+    assertSmallDataFrameEquality(expectedDF, responseDF)
   }
 
   /**
     * What is the min/max/average delays for an airline in a month and year?
     */
   test("min/max/average delays for an airline in a month and year") {
-    val result = Assignment2.Problem2(airlineDataDF)
+    val response = Assignment2.Problem2(airlineDataDF)
+
+    val expectedData = Seq(
+      Row("UA", 1613L),
+      Row("AA", 3077L),
+      Row("DL", 1299L),
+      Row("WN", 5095L),
+    )
+
+    val expectedSchema = List(
+      StructField("Reporting_Airline", StringType, true),
+      StructField("count", LongType, false)
+    )
+    val expectedDF = spark.createDataFrame(
+      spark.sparkContext.parallelize(expectedData),
+      StructType(expectedSchema)
+    )
+
+    assertSmallDataFrameEquality(expectedDF, response)
   }
 
   /**
@@ -95,7 +131,7 @@ class Assignment2Test extends AnyFunSuite with Matchers with BeforeAndAfterEach 
   /**
     * What delay type is most common at each airport?
     */
-  test("Did airlines with modernized fleet perform better") {
+  test("Delay type common at each airport") {
     val result = Assignment2.Problem4(airlineDataDF)
   }
 

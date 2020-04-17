@@ -101,24 +101,27 @@ class Assignment2Test extends AnyFunSuite with Matchers with BeforeAndAfterEach 
     */
   test("min/max/average delays for an airline in a month and year") {
     val response = Assignment2.Problem2(airlineDataDF)
-
+    println(response.schema)
     val expectedData = Seq(
-      Row("UA", 1613L),
-      Row("AA", 3077L),
-      Row("DL", 1299L),
-      Row("WN", 5095L),
+      Row("DL", "1/1/2019", 114L),
+      Row("DL", "1/10/2019", 249L),
+      Row("DL", "1/11/2019", 208L),
+      Row("DL", "1/12/2019", 141L),
     )
 
     val expectedSchema = List(
       StructField("Reporting_Airline", StringType, true),
+      StructField("FlightDate", StringType, true),
       StructField("count", LongType, false)
     )
+
     val expectedDF = spark.createDataFrame(
       spark.sparkContext.parallelize(expectedData),
       StructType(expectedSchema)
     )
 
     assertSmallDataFrameEquality(expectedDF, response)
+
   }
 
   /**
@@ -132,14 +135,37 @@ class Assignment2Test extends AnyFunSuite with Matchers with BeforeAndAfterEach 
     * What delay type is most common at each airport?
     */
   test("Delay type common at each airport") {
-    val result = Assignment2.Problem4(airlineDataDF)
+    val response = Assignment2.Problem4(airlineDataDF)
+
+    println(response.schema)
+    val expectedData = Seq(
+      Row("MSY", 97L),
+      Row("MSY", 2L),
+      Row("MSY", 88L),
+      Row("MSY", 115L)
+    )
+
+    val expectedSchema = List(
+      StructField("Origin", StringType, true),
+      StructField("count", LongType, false)
+    )
+
+    val expectedDF = spark.createDataFrame(
+      spark.sparkContext.parallelize(expectedData),
+      StructType(expectedSchema)
+    )
+
+    assertSmallDataFrameEquality(expectedDF, response)
+
   }
 
   /**
     *Did airlines with modernized fleet perform better?
     */
   test("Did airlines with modernized fleet perform better") {
-    val result = Assignment2.Problem5(airlineDataDF)
+    val result = Assignment2.Problem5(airlineDataDF, planeDataDF)
   }
+
+
 
 }

@@ -1,12 +1,16 @@
 package com.spark.assignment1
 
 import org.apache.spark.sql.{DataFrame, Dataset}
-
+import java.time.{Duration, LocalDateTime}
+import java.time.format.DateTimeFormatter
 import scala.collection.immutable
 import org.apache.spark.sql.Row
+import org.apache.spark.sql.functions._
 import org.apache.spark.sql.types.{BooleanType, FloatType, IntegerType, LongType, StringType, StructField, StructType}
 
 object Assignment2 {
+
+  private val timestampFormat: DateTimeFormatter = DateTimeFormatter.ofPattern("M/d/yyyy H:mm")
 
   def Problem0(airlineData: DataFrame): Long = {
     println(airlineData.count())
@@ -21,12 +25,12 @@ object Assignment2 {
     val weatherDelayCount = airlineData.filter(airlineData.col("WeatherDelay").gt(0)).toDF()
     val carrierDelayCount = airlineData.filter(airlineData.col("CarrierDelay").gt(0)).toDF()
 
-    val aggData = Seq (
-      Row("lateAircraftDelayCount", lateAircraftDelayCount.count() * 1.0f / delaysCount.count() *100),
-      Row("securityDelayCount", securityDelayCount.count() * 1.0f / delaysCount.count() *100),
-      Row("nASDelayCount", nASDelayCount.count() * 1.0f/ delaysCount.count() *100),
-      Row("weatherDelayCount", weatherDelayCount.count() * 1.0f/ delaysCount.count() *100),
-      Row("carrierDelayCount", carrierDelayCount.count() * 1.0f/ delaysCount.count() *100)
+    val aggData = Seq(
+      Row("lateAircraftDelayCount", lateAircraftDelayCount.count() * 1.0f / delaysCount.count() * 100),
+      Row("securityDelayCount", securityDelayCount.count() * 1.0f / delaysCount.count() * 100),
+      Row("nASDelayCount", nASDelayCount.count() * 1.0f / delaysCount.count() * 100),
+      Row("weatherDelayCount", weatherDelayCount.count() * 1.0f / delaysCount.count() * 100),
+      Row("carrierDelayCount", carrierDelayCount.count() * 1.0f / delaysCount.count() * 100)
     )
     val someSchema = List(
       StructField("delayType", StringType, true),
@@ -38,32 +42,19 @@ object Assignment2 {
       StructType(someSchema)
     )
 
-    //delaysCount.union(lateAircraftDelayCount).union(securityDelayCount).union(nASDelayCount).union(weatherDelayCount).union(carrierDelayCount)
-/*
-    delaysCount
-    println(lateAircraftDelayCount.count() * 1.0f / delaysCount.count() *100)
-    println(securityDelayCount.count() * 1.0f/ delaysCount.count() *100)
-    println(nASDelayCount.count() * 1.0f/ delaysCount.count() *100)
-    println(weatherDelayCount.count() * 1.0f/ delaysCount.count() *100)
-    println(carrierDelayCount.count() * 1.0f/ delaysCount.count() *100)
-    //val response = Array("" -> )
-    val response = Array("lateAircraftDelayCount" -> lateAircraftDelayCount.count() * 1.0f / delaysCount.count() *100,
-                      "securityDelayCount" -> securityDelayCount.count() * 1.0f/ delaysCount.count() *100,
-                      "nASDelayCount" -> nASDelayCount.count() * 1.0f/ delaysCount.count() *100,
-                      "weatherDelayCount" -> weatherDelayCount.count() * 1.0f/ delaysCount.count() *100,
-                      "carrierDelayCount" -> carrierDelayCount.count() * 1.0f/ delaysCount.count() *100
-                      )
-    println(response.toMap)
-
- */
-    //return response.toMap
-    //return carrierDelayCount.count() * 1.0f/ delaysCount.count() *100
     return responseDF
   }
 
+  /**
+    * Filter the DF with arrival delay for delta airlines
+    *
+    * @param airlineData
+    * @return
+    */
   def Problem2(airlineData: DataFrame): DataFrame = {
-    val data = airlineData.filter("CarrierDelay > 0")
-        .groupBy("Reporting_Airline").count()
+    val data = airlineData.filter("ArrDel15 > 0 and Reporting_Airline = 'DL'").orderBy("FlightDate")
+      .groupBy("Reporting_Airline", "FlightDate").count().limit(4)
+
     data.show()
     return data
   }
@@ -72,11 +63,49 @@ object Assignment2 {
     return ???
   }
 
-  def Problem4(airlineData: DataFrame): Array[(String, Float)] = {
+  def Problem4(airlineData: DataFrame): DataFrame = {
+    val CarrierDelayDF = airlineData.filter("ArrDel15 > 0 and CarrierDelay > 0 and Origin = 'MSY'")
+      .groupBy("Origin").count().limit(1)
+
+    val WeatherDelayDF = airlineData.filter("ArrDel15 > 0 and WeatherDelay > 0 and Origin = 'MSY'")
+      .groupBy("Origin").count().limit(1)
+
+    val NASDelayDF = airlineData.filter("ArrDel15 > 0 and NASDelay > 0 and Origin = 'MSY'")
+      .groupBy("Origin").count().limit(1)
+
+    val SecurityDelayDF = airlineData.filter("ArrDel15 > 0 and SecurityDelay > 0 and Origin = 'MSY'")
+      .groupBy("Origin").count().limit(1)
+
+    val LateAircraftDelayDF = airlineData.filter("ArrDel15 > 0 and LateAircraftDelay > 0 and Origin = 'MSY'")
+      .groupBy("Origin").count().limit(1)
+
+    CarrierDelayDF.show()
+    WeatherDelayDF.show()
+    NASDelayDF.show()
+    SecurityDelayDF.show()
+    LateAircraftDelayDF.show()
+
+    CarrierDelayDF.union(WeatherDelayDF).union(NASDelayDF).union(SecurityDelayDF).union(LateAircraftDelayDF).show()
+
+    return CarrierDelayDF.union(WeatherDelayDF).union(NASDelayDF).union(SecurityDelayDF).union(LateAircraftDelayDF)
+  }
+
+  def Problem5(airlineData: DataFrame, planeData: DataFrame): DataFrame = {
+    //val combinedData = airlineData.join(planeData,  Seq("Tail_Number", "tailnum"))
+    val combinedData = airlineData.withColumn("Tail_Number", col("Tail_Number")).join(planeData.withColumn("tailnum", col("tailnum")))
+    combinedData.show()
     return ???
   }
 
-  def Problem5(airlineData: DataFrame): Array[(String, Float)] = {
-    return ???
+  // Helper function to parse the timestamp format used in the trip dataset.
+  private def parseTimestamp(timestamp: String) = LocalDateTime.from(timestampFormat.parse(timestamp))
+
+  private def airline_ownership(row: String): String = {
+    if (row.equalsIgnoreCase("DL") ||
+      row.equalsIgnoreCase("AA") ||
+      row.equalsIgnoreCase("UA"))
+      return "Public"
+    else (row.equalsIgnoreCase("WN"))
+    return "Private"
   }
 }

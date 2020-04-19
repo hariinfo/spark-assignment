@@ -1,3 +1,9 @@
 package com.spark.assignment1
 
-case class Plane ()
+import java.sql.Date
+
+
+case class Plane (
+                   tailnum: String,
+                   issue_date: Date,
+                 )

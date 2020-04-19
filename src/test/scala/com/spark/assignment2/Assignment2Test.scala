@@ -1,26 +1,27 @@
 package com.spark.assignment2
 
-import org.apache.spark.sql.{DataFrame, Dataset, Encoder, Encoders, SparkSession}
+import org.apache.spark.sql.{DataFrame, Dataset, Encoder, Encoders, Row, SaveMode, SparkSession}
 
 import scala.concurrent.duration._
-import org.scalatest.BeforeAndAfterEach
+import org.scalatest.{BeforeAndAfterAll, BeforeAndAfterEach}
 import org.scalatest.funsuite.AnyFunSuite
 import org.scalatest.matchers.must.Matchers
 import org.scalatest.matchers.should._
-import org.apache.spark.sql.Row
 import com.spark.assignment1.Airline
 import com.spark.assignment1.Carrier
 import com.spark.assignment1.Plane
 import com.spark.assignment1.Assignment2
 import com.github.mrpowers.spark.fast.tests.DataFrameComparer
+import org.apache.spark.sql.functions.{col, lit, to_timestamp}
 import org.apache.spark.sql.types.{BooleanType, FloatType, IntegerType, LongType, StringType, StructField, StructType}
 
-class Assignment2Test extends AnyFunSuite with Matchers with BeforeAndAfterEach with DataFrameComparer {
+class Assignment2Test extends AnyFunSuite with Matchers with BeforeAndAfterEach with DataFrameComparer with BeforeAndAfterAll {
 
   val AIRLINE_DATA_CSV_PATH = "data/airline_performance.csv"
   val CARRIERS_DATA_CSV_PATH = "data/carrier.csv"
   val PLANE_DATA_CSV_PATH = "data/plane-data.csv"
 
+  val AIRLINE_PLANE_DATA_PARQUET_PATH ="airline_and_plane/joined.parquet"
   val BLOCK_ON_COMPLETION = false;
 
   /**
@@ -37,7 +38,7 @@ class Assignment2Test extends AnyFunSuite with Matchers with BeforeAndAfterEach 
     */
   val csvReadOptions =
     Map("inferSchema" -> true.toString, "header" -> true.toString)
-
+  //TODO: Add Caching
   implicit val airlineEncoder: Encoder[Airline] = Encoders.product[Airline]
   implicit val carrierEncoder: Encoder[Carrier] = Encoders.product[Carrier]
   implicit val planeEncoder: Encoder[Plane] = Encoders.product[Plane]
@@ -47,9 +48,19 @@ class Assignment2Test extends AnyFunSuite with Matchers with BeforeAndAfterEach 
 
   def carrierDS: Dataset[Carrier] = spark.read.options(csvReadOptions).csv(CARRIERS_DATA_CSV_PATH).as[Carrier]
   def carrierDataDF: DataFrame = carrierDS.toDF()
+/*
+  def planeDS: Dataset[Plane] = spark.read.options(csvReadOptions)
+                                .option("timestampFormat", "MM/dd/yyyy")
+                                .csv(PLANE_DATA_CSV_PATH).as[Plane]
+   def planeDataDF: DataFrame = planeDS.toDF()
+  */
 
-  def planeDS: Dataset[Plane] = spark.read.options(csvReadOptions).csv(PLANE_DATA_CSV_PATH).as[Plane]
-  def planeDataDF: DataFrame = planeDS.toDF()
+  def planeDataDF: DataFrame = spark.read.option("header", "true")
+    .option("treatEmptyValuesAsNulls", "true")
+    .option("inferSchema", "true")
+    .option("timestampFormat", "MM/DD/YYYY")
+    .option("mode", "DROPMALFORMED")
+    .csv(PLANE_DATA_CSV_PATH)
 
   /**
     * Keep the Spark Context running so the Spark UI can be viewed after the test has completed.
@@ -60,6 +71,17 @@ class Assignment2Test extends AnyFunSuite with Matchers with BeforeAndAfterEach 
       // open SparkUI at http://localhost:4040
       Thread.sleep(5.minutes.toMillis)
     }
+  }
+
+  override def beforeAll() {
+    //Combine the dataframe and create a parquet of combined data
+    //partition by airline
+    val planeDataMod = planeDataDF.withColumnRenamed("tailnum", "Tail_Number").withColumnRenamed("year", "ManYear")
+    val planeDataDFMod = planeDataMod.withColumn("issueDate", to_timestamp(col("issue_date"), "MM/DD/YYYY"))
+    val planeDataCombined = airlineDataDF.join(planeDataDFMod, Seq("Tail_Number"), "left_outer")
+    planeDataCombined.write.mode(SaveMode.Overwrite)
+      .partitionBy("Reporting_Airline")
+      .parquet(AIRLINE_PLANE_DATA_PARQUET_PATH)
   }
 
   /**
@@ -163,9 +185,19 @@ class Assignment2Test extends AnyFunSuite with Matchers with BeforeAndAfterEach 
     *Did airlines with modernized fleet perform better?
     */
   test("Did airlines with modernized fleet perform better") {
-    val result = Assignment2.Problem5(airlineDataDF, planeDataDF)
+    val result = Assignment2.Problem5(
+              readAirlineAndPlane().toDF().filter(col("issueDate")
+                .gt(lit("2000/01/01")) and col("ArrDel15")
+                .notEqual(0)),
+              readAirlineAndPlane().toDF().filter(col("issueDate")
+                .lt(lit("2000/01/01")) and col("ArrDel15")
+                .notEqual(0))
+              )
   }
 
+  private def readAirlineAndPlane(): DataFrame = {
+    spark.read.parquet(AIRLINE_PLANE_DATA_PARQUET_PATH)
+  }
 
 
 }

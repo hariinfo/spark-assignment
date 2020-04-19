@@ -1,10 +1,11 @@
 package com.spark.assignment1
 
-import org.apache.spark.sql.{DataFrame, Dataset}
+import org.apache.spark.sql.{DataFrame, Dataset, Row, SaveMode}
 import java.time.{Duration, LocalDateTime}
 import java.time.format.DateTimeFormatter
+
 import scala.collection.immutable
-import org.apache.spark.sql.Row
+import org.apache.spark.sql.types._
 import org.apache.spark.sql.functions._
 import org.apache.spark.sql.types.{BooleanType, FloatType, IntegerType, LongType, StringType, StructField, StructType}
 
@@ -90,12 +91,15 @@ object Assignment2 {
     return CarrierDelayDF.union(WeatherDelayDF).union(NASDelayDF).union(SecurityDelayDF).union(LateAircraftDelayDF)
   }
 
-  def Problem5(airlineData: DataFrame, planeData: DataFrame): DataFrame = {
-    //val combinedData = airlineData.join(planeData,  Seq("Tail_Number", "tailnum"))
-    val combinedData = airlineData.withColumn("Tail_Number", col("Tail_Number")).join(planeData.withColumn("tailnum", col("tailnum")))
-    combinedData.show()
+  def Problem5(modernFleet: DataFrame, legacyFleet: DataFrame): DataFrame = {
+    modernFleet.show()
+    legacyFleet.show()
+
     return ???
   }
+
+
+
 
   // Helper function to parse the timestamp format used in the trip dataset.
   private def parseTimestamp(timestamp: String) = LocalDateTime.from(timestampFormat.parse(timestamp))
@@ -108,4 +112,5 @@ object Assignment2 {
     else (row.equalsIgnoreCase("WN"))
     return "Private"
   }
+
 }

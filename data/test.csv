@@ -1,54 +1,19 @@
-tailnum,type,manufacturer,issue_date,model,status,aircraft_type,engine_type,year
-N050AA
-N051AA
-N052AA
-N054AA
-N055AA
-N056AA
-N057AA
-N058AA
-N059AA
-N060AA
-N061AA
-N062AA
-N063AA
-N064AA
-N065AA
-N066AA
-N067AA
-N068AA
-N069AA
-N070AA
-N071AA
-N072AA
-N073AA
-N074AA
-N075AA
-N076AA
-N077AA
-N078AA
-N079AA
-N080AA
-N081AA
-N082AA
-N083AA
-N084AA
-N10156,Corporation,EMBRAER,02/13/2004,EMB-145XR,Valid,Fixed Wing Multi-Engine,Turbo-Fan,2004
-N102UW,Corporation,AIRBUS INDUSTRIE,05/26/1999,A320-214,Valid,Fixed Wing Multi-Engine,Turbo-Fan,1998
-N10323,Corporation,BOEING,07/01/1997,737-3TO,Valid,Fixed Wing Multi-Engine,Turbo-Jet,1986
-N103US,Corporation,AIRBUS INDUSTRIE,06/18/1999,A320-214,Valid,Fixed Wing Multi-Engine,Turbo-Fan,1999
-N104UA,Corporation,BOEING,01/26/1998,747-422,Valid,Fixed Wing Multi-Engine,Turbo-Fan,1998
-N104UW,Corporation,AIRBUS INDUSTRIE,07/02/1999,A320-214,Valid,Fixed Wing Multi-Engine,Turbo-Fan,1999
-N10575,Corporation,EMBRAER,06/24/2003,EMB-145LR,Valid,Fixed Wing Multi-Engine,Turbo-Fan,2002
-N105UA,Corporation,BOEING,10/15/2007,747-451,Valid,Fixed Wing Multi-Engine,Turbo-Jet,1994
-N105UW,Corporation,AIRBUS INDUSTRIE,07/22/1999,A320-214,Valid,Fixed Wing Multi-Engine,Turbo-Fan,1999
-N106US,Corporation,AIRBUS INDUSTRIE,08/05/1999,A320-214,Valid,Fixed Wing Multi-Engine,Turbo-Fan,1999
-N107UA,Corporation,BOEING,08/24/1998,747-422,Valid,Fixed Wing Multi-Engine,Turbo-Fan,1998
-N107US,Corporation,AIRBUS INDUSTRIE,08/17/1999,A320-214,Valid,Fixed Wing Multi-Engine,Turbo-Fan,1999
-N108UW,Corporation,AIRBUS INDUSTRIE,09/03/1999,A320-214,Valid,Fixed Wing Multi-Engine,Turbo-Fan,1999
-N109UW,Corporation,AIRBUS INDUSTRIE,09/10/1999,A320-214,Valid,Fixed Wing Multi-Engine,Turbo-Fan,1999
-N110UW,Corporation,AIRBUS INDUSTRIE,11/22/1999,A320-214,Valid,Fixed Wing Multi-Engine,Turbo-Fan,1999
-N11106,Corporation,EMBRAER,06/25/2003,EMB-145XR,Valid,Fixed Wing Multi-Engine,Turbo-Fan,2002
+tailnum,type,manufacturer,issue_date,model,status,aircraft_type,engine_type,year,ArrDel15
+N102UW,Corporation,AIRBUS INDUSTRIE,05/26/1999,A320-214,Valid,Fixed Wing Multi-Engine,Turbo-Fan,1998,1
+N10323,Corporation,BOEING,07/01/1997,737-3TO,Valid,Fixed Wing Multi-Engine,Turbo-Jet,1986,1
+N103US,Corporation,AIRBUS INDUSTRIE,06/18/1999,A320-214,Valid,Fixed Wing Multi-Engine,Turbo-Fan,1999,1
+N104UA,Corporation,BOEING,01/26/1998,747-422,Valid,Fixed Wing Multi-Engine,Turbo-Fan,1998,1
+N104UW,Corporation,AIRBUS INDUSTRIE,07/02/1999,A320-214,Valid,Fixed Wing Multi-Engine,Turbo-Fan,1999,1
+N10575,Corporation,EMBRAER,06/24/2003,EMB-145LR,Valid,Fixed Wing Multi-Engine,Turbo-Fan,2002,1
+N105UA,Corporation,BOEING,10/15/2007,747-451,Valid,Fixed Wing Multi-Engine,Turbo-Jet,1994,1
+N105UW,Corporation,AIRBUS INDUSTRIE,07/22/1999,A320-214,Valid,Fixed Wing Multi-Engine,Turbo-Fan,1999,1
+N106US,Corporation,AIRBUS INDUSTRIE,08/05/1999,A320-214,Valid,Fixed Wing Multi-Engine,Turbo-Fan,1999,1
+N107UA,Corporation,BOEING,08/24/1998,747-422,Valid,Fixed Wing Multi-Engine,Turbo-Fan,1998,1
+N107US,Corporation,AIRBUS INDUSTRIE,08/17/1999,A320-214,Valid,Fixed Wing Multi-Engine,Turbo-Fan,1999,1
+N108UW,Corporation,AIRBUS INDUSTRIE,09/03/1999,A320-214,Valid,Fixed Wing Multi-Engine,Turbo-Fan,1999,1
+N109UW,Corporation,AIRBUS INDUSTRIE,09/10/1999,A320-214,Valid,Fixed Wing Multi-Engine,Turbo-Fan,1999,1
+N110UW,Corporation,AIRBUS INDUSTRIE,11/22/1999,A320-214,Valid,Fixed Wing Multi-Engine,Turbo-Fan,1999,1
+N11106,Corporation,EMBRAER,06/25/2003,EMB-145XR,Valid,Fixed Wing Multi-Engine,Turbo-Fan,2002,1
 N11107,Corporation,EMBRAER,06/25/2003,EMB-145XR,Valid,Fixed Wing Multi-Engine,Turbo-Fan,2002
 N11109,Corporation,EMBRAER,06/25/2003,EMB-145XR,Valid,Fixed Wing Multi-Engine,Turbo-Fan,2002
 N11113,Corporation,EMBRAER,06/25/2003,EMB-145XR,Valid,Fixed Wing Multi-Engine,Turbo-Fan,2002

@@ -7,6 +7,7 @@ object Sample {
   val AIRLINE_PLANE_DATA_PARQUET_PATH ="airline_and_plane/joined.parquet"
 
   /**
+    *
     * Create a SparkSession that runs locally on our laptop.
     */
   val spark =
@@ -26,19 +27,40 @@ object Sample {
       .option("timestampFormat", "MM/DD/YYYY")
       .option("mode", "DROPMALFORMED")
       .csv(PLANE_DATA_CSV_PATH)
-//    planeDataDF.write
+    println(planeDataDF.schema)
+
+    val planeDataDF1 = planeDataDF.withColumn("date", to_date(col("issue_date"),
+      "YYYY"))
+    planeDataDF1.show()
+
+    val pivoted = planeDataDF1.groupBy("date").pivot("manufacturer").sum()
+    pivoted.where("date > '1999'").show()
+
+
+    planeDataDF.filter(col("year")
+      .gt(lit("1997")) and col("ArrDel15")
+      .notEqual(0)).show()
+    planeDataDF.filter(col("year")
+      .lt(lit("1996")) and col("ArrDel15")
+      .notEqual(0)).show()
+
+
+    //    planeDataDF.write
 //        .partitionBy("issue_date")
 //      .parquet("plane_data")
 
+    /*
     spark.read.parquet(AIRLINE_PLANE_DATA_PARQUET_PATH).schema
 
     spark.read.parquet(AIRLINE_PLANE_DATA_PARQUET_PATH).toDF().filter(col("issueDate")
-      .gt(lit("2008/01/01")) and col("ArrDel15")
+      .gt(lit("01/01/1999")) and col("ArrDel15")
       .notEqual(0)).show()
 
     spark.read.parquet(AIRLINE_PLANE_DATA_PARQUET_PATH).toDF().filter(col("issueDate")
-      .lt(lit("2008/01/01")) and col("ArrDel15")
+      .lt(lit("01/01/1996")) and col("ArrDel15")
       .notEqual(0)).show()
+
+     */
   }
 
 }

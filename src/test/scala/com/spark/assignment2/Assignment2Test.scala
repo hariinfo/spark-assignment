@@ -157,7 +157,9 @@ class Assignment2Test extends AnyFunSuite with Matchers with BeforeAndAfterEach 
     * What delay type is most common at each airport?
     */
   test("Delay type common at each airport") {
+
     val response = Assignment2.Problem4(airlineDataDF)
+
 
     println(response.schema)
     val expectedData = Seq(
@@ -186,13 +188,16 @@ class Assignment2Test extends AnyFunSuite with Matchers with BeforeAndAfterEach 
     */
   test("Did airlines with modernized fleet perform better") {
     val result = Assignment2.Problem5(
-              readAirlineAndPlane().toDF().filter(col("issueDate")
-                .gt(lit("2000/01/01")) and col("ArrDel15")
+              readAirlineAndPlane().toDF().filter(col("ManYear")
+                .gt(lit("2000")) and col("ArrDel15")
                 .notEqual(0)),
-              readAirlineAndPlane().toDF().filter(col("issueDate")
-                .lt(lit("2000/01/01")) and col("ArrDel15")
+              readAirlineAndPlane().toDF().filter(col("ManYear")
+                .lt(lit("2000")) and col("ArrDel15")
                 .notEqual(0))
               )
+
+    result must equal((2596,1756))
+
   }
 
   private def readAirlineAndPlane(): DataFrame = {

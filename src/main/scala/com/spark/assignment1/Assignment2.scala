@@ -9,6 +9,7 @@ import org.apache.spark.sql.types._
 import org.apache.spark.sql.functions._
 import org.apache.spark.sql.types.{BooleanType, FloatType, IntegerType, LongType, StringType, StructField, StructType}
 
+
 object Assignment2 {
 
   private val timestampFormat: DateTimeFormatter = DateTimeFormatter.ofPattern("M/d/yyyy H:mm")
@@ -91,11 +92,22 @@ object Assignment2 {
     return CarrierDelayDF.union(WeatherDelayDF).union(NASDelayDF).union(SecurityDelayDF).union(LateAircraftDelayDF)
   }
 
-  def Problem5(modernFleet: DataFrame, legacyFleet: DataFrame): DataFrame = {
+  def Problem5(modernFleet: DataFrame, legacyFleet: DataFrame): (Long, Long) = {
     modernFleet.show()
     legacyFleet.show()
+    val modernFleetDelay = modernFleet.where("ArrDel15 > 0 and CarrierDelay > 0")
+                          .select(col("ArrDel15")).count()
+    val legacyFleetDelay = legacyFleet.where("ArrDel15 > 0 and CarrierDelay > 0")
+                          .count()
+    println(modernFleetDelay)
+    println(legacyFleetDelay)
 
-    return ???
+    val expectedData = Seq(
+      ("lateAircraftDelayCount", modernFleetDelay),
+      ("securityDelayCount", legacyFleetDelay),
+    ).to
+
+    return (modernFleetDelay, legacyFleetDelay)
   }
 
 

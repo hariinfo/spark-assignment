@@ -22,7 +22,7 @@ class Assignment2Test extends AnyFunSuite with Matchers with BeforeAndAfterEach 
   val PLANE_DATA_CSV_PATH = "data/plane-data.csv"
 
   val AIRLINE_PLANE_DATA_PARQUET_PATH ="airline_and_plane/joined.parquet"
-  val BLOCK_ON_COMPLETION = false;
+  val BLOCK_ON_COMPLETION = true;
 
   /**
     * Create a SparkSession that runs locally on our laptop.
@@ -45,7 +45,6 @@ class Assignment2Test extends AnyFunSuite with Matchers with BeforeAndAfterEach 
 
   def airlineDataDF: DataFrame = spark.read.options(csvReadOptions).csv(AIRLINE_DATA_CSV_PATH)
   def carrierDataDF: DataFrame = spark.read.options(csvReadOptions).csv(CARRIERS_DATA_CSV_PATH)
-
   def planeDataDF: DataFrame = spark.read.option("header", "true")
     .option("treatEmptyValuesAsNulls", "true")
     .option("inferSchema", "true")
@@ -91,11 +90,11 @@ class Assignment2Test extends AnyFunSuite with Matchers with BeforeAndAfterEach 
 
 
     val expectedData = Seq(
-      Row("lateAircraftDelayCount", 46.95214F),
-      Row("securityDelayCount", 0.23548368F),
-      Row("nASDelayCount", 57.34647F),
-      Row("weatherDelayCount", 7.3970795F),
-      Row("carrierDelayCount", 49.906013F)
+      Row("lateAircraftDelayCount", 50.19418F),
+      Row("securityDelayCount", 0.28828743F),
+      Row("nASDelayCount", 57.59375F),
+      Row("weatherDelayCount", 7.226842F),
+      Row("carrierDelayCount", 47.694893F)
     )
 
     val expectedSchema = List(
@@ -143,7 +142,7 @@ class Assignment2Test extends AnyFunSuite with Matchers with BeforeAndAfterEach 
     */
   test("public vs private airlines") {
     val result = Assignment2.Problem3(readAirlineAndPlane().toDF())
-    result must equal((32300,16111))
+    result must equal((108085,59803))
   }
 
   /**
@@ -156,10 +155,11 @@ class Assignment2Test extends AnyFunSuite with Matchers with BeforeAndAfterEach 
 
     println(response.schema)
     val expectedData = Seq(
-      Row("MSY", 205L),
-      Row("MSY", 7L),
-      Row("MSY", 214L),
-      Row("MSY", 271L)
+      Row("MSY", 598L),
+      Row("MSY", 25L),
+      Row("MSY", 624L),
+      Row("MSY", 1L),
+      Row("MSY", 752L)
     )
 
     val expectedSchema = List(
@@ -180,11 +180,13 @@ class Assignment2Test extends AnyFunSuite with Matchers with BeforeAndAfterEach 
     *Did airlines with modernized fleet perform better?
     */
   test("Did airlines with modernized fleet perform better") {
+    //val cachedAirlineData = readAirlineAndPlane().toDF().cache()
+
     val result = Assignment2.Problem5(
-              readAirlineAndPlane().toDF().filter(col("ManYear")
+      cachedAirlineData.filter(col("ManYear")
                 .gt(lit("2000")) and col("ArrDel15")
                 .notEqual(0)),
-              readAirlineAndPlane().toDF().filter(col("ManYear")
+      cachedAirlineData.filter(col("ManYear")
                 .lt(lit("2000")) and col("ArrDel15")
                 .notEqual(0))
               )

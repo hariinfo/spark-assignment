@@ -43,12 +43,8 @@ class Assignment2Test extends AnyFunSuite with Matchers with BeforeAndAfterEach 
   implicit val carrierEncoder: Encoder[Carrier] = Encoders.product[Carrier]
   implicit val planeEncoder: Encoder[Plane] = Encoders.product[Plane]
 
-  //def airlineDS: Dataset[Airline] = spark.read.options(csvReadOptions).csv(AIRLINE_DATA_CSV_PATH).as[Airline]
   def airlineDataDF: DataFrame = spark.read.options(csvReadOptions).csv(AIRLINE_DATA_CSV_PATH)
-
-  //def carrierDS: Dataset[Carrier] = spark.read.options(csvReadOptions).csv(CARRIERS_DATA_CSV_PATH).as[Carrier]
   def carrierDataDF: DataFrame = spark.read.options(csvReadOptions).csv(CARRIERS_DATA_CSV_PATH)
-
 
   def planeDataDF: DataFrame = spark.read.option("header", "true")
     .option("treatEmptyValuesAsNulls", "true")

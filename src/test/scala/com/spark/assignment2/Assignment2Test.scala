@@ -150,7 +150,8 @@ class Assignment2Test extends AnyFunSuite with Matchers with BeforeAndAfterEach 
     * Did privately managed airlines perform better than publicly traded ones?
     */
   test("public vs private airlines") {
-    val result = Assignment2.Problem3(airlineDataDF)
+    val result = Assignment2.Problem3(readAirlineAndPlane().toDF())
+    result must equal((12964,8304))
   }
 
   /**

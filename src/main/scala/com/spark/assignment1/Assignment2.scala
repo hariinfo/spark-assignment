@@ -4,10 +4,11 @@ import org.apache.spark.sql.{DataFrame, Dataset, Row, SaveMode}
 import java.time.{Duration, LocalDateTime}
 import java.time.format.DateTimeFormatter
 
-import scala.collection.immutable
+import scala.collection.{immutable, mutable}
 import org.apache.spark.sql.types._
 import org.apache.spark.sql.functions._
 import org.apache.spark.sql.types.{BooleanType, FloatType, IntegerType, LongType, StringType, StructField, StructType}
+import org.apache.spark.sql.SparkSession
 
 
 object Assignment2 {
@@ -61,8 +62,18 @@ object Assignment2 {
     return data
   }
 
-  def Problem3(airlineData: DataFrame): Array[(String, Float)] = {
-    return ???
+  def Problem3(airlineData: DataFrame): (Long, Long) = {
+    //Declare the UDF
+    val spark = SparkSession.builder().appName("udfTest").master("local").getOrCreate()
+    import spark.implicits._
+    spark.udf.register("airline_ownership", airline_ownership _)
+    val airlineDataWithOwnership = airlineData.withColumn("ownership", callUDF("airline_ownership", col("Reporting_Airline")))
+    val publicOwnership = airlineDataWithOwnership.filter("ArrDel15 > 0 and ownership = 'Public'").count()
+    val privateOwnership = airlineDataWithOwnership.filter("ArrDel15 > 0 and ownership = 'Private'").count()
+
+   //airlineData.withColumn("ownership", udf(col("Reporting_Airline").toString()))
+
+    return (publicOwnership, privateOwnership)
   }
 
   def Problem4(airlineData: DataFrame): DataFrame = {
@@ -109,7 +120,6 @@ object Assignment2 {
 
     return (modernFleetDelay, legacyFleetDelay)
   }
-
 
 
 

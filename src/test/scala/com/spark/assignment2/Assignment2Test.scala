@@ -17,7 +17,7 @@ import org.apache.spark.sql.types.{BooleanType, FloatType, IntegerType, LongType
 
 class Assignment2Test extends AnyFunSuite with Matchers with BeforeAndAfterEach with DataFrameComparer with BeforeAndAfterAll {
 
-  val AIRLINE_DATA_CSV_PATH = "data/airline_performance.csv"
+  val AIRLINE_DATA_CSV_PATH = "data/On_Time_Reporting_Carrier_On_Time_Performance_(1987_present)_2019_1.csv"
   val CARRIERS_DATA_CSV_PATH = "data/carrier.csv"
   val PLANE_DATA_CSV_PATH = "data/plane-data.csv"
 
@@ -88,22 +88,22 @@ class Assignment2Test extends AnyFunSuite with Matchers with BeforeAndAfterEach 
     *
     */
   test("Select count") {
-    Assignment2.Problem0(airlineDataDF) must equal(149033)
+    Assignment2.Problem0(readAirlineAndPlane.toDF()) must equal(302118)
   }
 
   /**
     * What is the percentage delay types by total delays?
     */
   test("percentage delay types by total delays") {
-    val responseDF = Assignment2.Problem1(airlineDataDF)
+    val responseDF = Assignment2.Problem1(readAirlineAndPlane.toDF())
 
 
     val expectedData = Seq(
-      Row("lateAircraftDelayCount", 48.255596F),
-      Row("securityDelayCount", 0.31032535F),
-      Row("nASDelayCount", 55.632877F),
-      Row("weatherDelayCount", 5.110965F),
-      Row("carrierDelayCount", 52.115856F)
+      Row("lateAircraftDelayCount", 46.95214F),
+      Row("securityDelayCount", 0.23548368F),
+      Row("nASDelayCount", 57.34647F),
+      Row("weatherDelayCount", 7.3970795F),
+      Row("carrierDelayCount", 49.906013F)
     )
 
     val expectedSchema = List(
@@ -122,7 +122,7 @@ class Assignment2Test extends AnyFunSuite with Matchers with BeforeAndAfterEach 
     * What is the min/max/average delays for an airline in a month and year?
     */
   test("min/max/average delays for an airline in a month and year") {
-    val response = Assignment2.Problem2(airlineDataDF)
+    val response = Assignment2.Problem2(readAirlineAndPlane.toDF())
     println(response.schema)
     val expectedData = Seq(
       Row("DL", "1/1/2019", 114L),
@@ -151,7 +151,7 @@ class Assignment2Test extends AnyFunSuite with Matchers with BeforeAndAfterEach 
     */
   test("public vs private airlines") {
     val result = Assignment2.Problem3(readAirlineAndPlane().toDF())
-    result must equal((12964,8304))
+    result must equal((32300,16111))
   }
 
   /**
@@ -159,15 +159,15 @@ class Assignment2Test extends AnyFunSuite with Matchers with BeforeAndAfterEach 
     */
   test("Delay type common at each airport") {
 
-    val response = Assignment2.Problem4(airlineDataDF)
+    val response = Assignment2.Problem4(readAirlineAndPlane().toDF())
 
 
     println(response.schema)
     val expectedData = Seq(
-      Row("MSY", 97L),
-      Row("MSY", 2L),
-      Row("MSY", 88L),
-      Row("MSY", 115L)
+      Row("MSY", 205L),
+      Row("MSY", 7L),
+      Row("MSY", 214L),
+      Row("MSY", 271L)
     )
 
     val expectedSchema = List(
@@ -197,7 +197,7 @@ class Assignment2Test extends AnyFunSuite with Matchers with BeforeAndAfterEach 
                 .notEqual(0))
               )
 
-    result must equal((2596,1756))
+    result must equal((5457,4176))
 
   }
 

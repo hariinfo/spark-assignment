@@ -3,8 +3,8 @@ package com.spark.assignment1
 import java.util.Date
 
 case class Airline(
-                    Year: Long,
-                    Month: Long,
+                    Year: String,
+                    Month: String,
                     Tail_Number: String,
                     Reporting_Airline: String,
                     FlightDate: String,
@@ -12,8 +12,8 @@ case class Airline(
                     OriginStateName: String,
                     DestState: String,
                     DestStateName: String,
-                    ArrDel15: Double,
-                    DepDel15: Double,
+                    ArrDel15: Int,
+                    DepDel15: Int,
                     CarrierDelay: Int,
                     WeatherDelay: Int,
                     NASDelay: Int,

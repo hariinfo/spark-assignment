@@ -127,12 +127,14 @@ object Assignment2 {
   private def parseTimestamp(timestamp: String) = LocalDateTime.from(timestampFormat.parse(timestamp))
 
   private def airline_ownership(row: String): String = {
+    //Delta, united, American Airlines and SouthWest airlines are publicly traded
     if (row.equalsIgnoreCase("DL") ||
       row.equalsIgnoreCase("AA") ||
-      row.equalsIgnoreCase("UA"))
+      row.equalsIgnoreCase("UA") ||
+      row.equalsIgnoreCase("WN"))
       return "Public"
-    else (row.equalsIgnoreCase("WN"))
-    return "Private"
+    else //All other airline codes are privately managed
+      return "Private"
   }
 
 }

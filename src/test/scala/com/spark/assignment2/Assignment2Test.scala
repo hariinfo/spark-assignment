@@ -17,7 +17,7 @@ import org.apache.spark.sql.types.{BooleanType, FloatType, IntegerType, LongType
 
 class Assignment2Test extends AnyFunSuite with Matchers with BeforeAndAfterEach with DataFrameComparer with BeforeAndAfterAll {
 
-  val AIRLINE_DATA_CSV_PATH = "data/On_Time_Reporting_Carrier_On_Time_Performance_(1987_present)_2019_1.csv"
+  val AIRLINE_DATA_CSV_PATH = "data/On_Time_Reporting_Carrier_On_Time_Performance_*.csv"
   val CARRIERS_DATA_CSV_PATH = "data/carrier.csv"
   val PLANE_DATA_CSV_PATH = "data/plane-data.csv"
 
@@ -43,11 +43,11 @@ class Assignment2Test extends AnyFunSuite with Matchers with BeforeAndAfterEach 
   implicit val carrierEncoder: Encoder[Carrier] = Encoders.product[Carrier]
   implicit val planeEncoder: Encoder[Plane] = Encoders.product[Plane]
 
-  def airlineDS: Dataset[Airline] = spark.read.options(csvReadOptions).csv(AIRLINE_DATA_CSV_PATH).as[Airline]
-  def airlineDataDF: DataFrame = airlineDS.toDF()
+  //def airlineDS: Dataset[Airline] = spark.read.options(csvReadOptions).csv(AIRLINE_DATA_CSV_PATH).as[Airline]
+  def airlineDataDF: DataFrame = spark.read.options(csvReadOptions).csv(AIRLINE_DATA_CSV_PATH)
 
-  def carrierDS: Dataset[Carrier] = spark.read.options(csvReadOptions).csv(CARRIERS_DATA_CSV_PATH).as[Carrier]
-  def carrierDataDF: DataFrame = carrierDS.toDF()
+  //def carrierDS: Dataset[Carrier] = spark.read.options(csvReadOptions).csv(CARRIERS_DATA_CSV_PATH).as[Carrier]
+  def carrierDataDF: DataFrame = spark.read.options(csvReadOptions).csv(CARRIERS_DATA_CSV_PATH)
 
 
   def planeDataDF: DataFrame = spark.read.option("header", "true")
@@ -84,7 +84,7 @@ class Assignment2Test extends AnyFunSuite with Matchers with BeforeAndAfterEach 
     * Check the record count
     */
   test("Select count") {
-    Assignment2.Problem0(readAirlineAndPlane.toDF()) must equal(302118)
+    Assignment2.Problem0(readAirlineAndPlane.toDF()) must equal(835293)
   }
 
   /**
@@ -193,7 +193,7 @@ class Assignment2Test extends AnyFunSuite with Matchers with BeforeAndAfterEach 
                 .notEqual(0))
               )
 
-    result must equal((5457,4176))
+    result must equal((22200,9560))
 
   }
 

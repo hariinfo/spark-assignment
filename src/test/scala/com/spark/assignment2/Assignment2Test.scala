@@ -48,12 +48,7 @@ class Assignment2Test extends AnyFunSuite with Matchers with BeforeAndAfterEach 
 
   def carrierDS: Dataset[Carrier] = spark.read.options(csvReadOptions).csv(CARRIERS_DATA_CSV_PATH).as[Carrier]
   def carrierDataDF: DataFrame = carrierDS.toDF()
-/*
-  def planeDS: Dataset[Plane] = spark.read.options(csvReadOptions)
-                                .option("timestampFormat", "MM/dd/yyyy")
-                                .csv(PLANE_DATA_CSV_PATH).as[Plane]
-   def planeDataDF: DataFrame = planeDS.toDF()
-  */
+
 
   def planeDataDF: DataFrame = spark.read.option("header", "true")
     .option("treatEmptyValuesAsNulls", "true")
@@ -79,13 +74,14 @@ class Assignment2Test extends AnyFunSuite with Matchers with BeforeAndAfterEach 
     val planeDataMod = planeDataDF.withColumnRenamed("tailnum", "Tail_Number").withColumnRenamed("year", "ManYear")
     val planeDataDFMod = planeDataMod.withColumn("issueDate", to_timestamp(col("issue_date"), "MM/DD/YYYY"))
     val planeDataCombined = airlineDataDF.join(planeDataDFMod, Seq("Tail_Number"), "left_outer")
+
     planeDataCombined.write.mode(SaveMode.Overwrite)
       .partitionBy("Reporting_Airline")
       .parquet(AIRLINE_PLANE_DATA_PARQUET_PATH)
   }
 
   /**
-    *
+    * Check the record count
     */
   test("Select count") {
     Assignment2.Problem0(readAirlineAndPlane.toDF()) must equal(302118)

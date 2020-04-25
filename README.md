@@ -50,9 +50,9 @@ Filter airlineDataDF by airport and then group by delay type to count delay type
 I will make use of filter(..) by column and groupBy(..,..) function for this implementation.
 
 ### Did airlines with modernized fleet perform better?
-Step 1: A job is created to read the parquet file from the disk
-Step 2: A job is run for the first count operation after the filter query on the dataframe. The job has two tasks that run in parallel to complete the task
-Step 3: Step 2 is repeated for the second dataframe
+Step 1: A job is created to read the parquet file from the disk<br/>
+Step 2: A job is run for the first count operation after the filter query on the dataframe. The job has two tasks that run in parallel to complete the task<br/>
+Step 3: Step 2 is repeated for the second dataframe<br/><br/>
 ![DF Caching](data/problem5_with_cache.png)
 
 I have utilized the UDF (user defined function) to generate a new column "ownership" based on a custom function airline_ownership(..)

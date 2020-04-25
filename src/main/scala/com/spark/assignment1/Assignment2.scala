@@ -21,7 +21,8 @@ object Assignment2 {
   }
 
   def Problem1(airlineData: DataFrame): DataFrame = {
-    val delaysCount = airlineData.filter(airlineData.col("ArrDel15").gt(0)).toDF()
+
+    val delaysCount = airlineData.filter(airlineData.col("ArrDel15").gt(0)).count()
     val lateAircraftDelayCount = airlineData.filter(airlineData.col("LateAircraftDelay").gt(0)).toDF()
     val securityDelayCount = airlineData.filter(airlineData.col("SecurityDelay").gt(0)).toDF()
     val nASDelayCount = airlineData.filter(airlineData.col("NASDelay").gt(0)).toDF()
@@ -29,11 +30,11 @@ object Assignment2 {
     val carrierDelayCount = airlineData.filter(airlineData.col("CarrierDelay").gt(0)).toDF()
 
     val aggData = Seq(
-      Row("lateAircraftDelayCount", lateAircraftDelayCount.count() * 1.0f / delaysCount.count() * 100),
-      Row("securityDelayCount", securityDelayCount.count() * 1.0f / delaysCount.count() * 100),
-      Row("nASDelayCount", nASDelayCount.count() * 1.0f / delaysCount.count() * 100),
-      Row("weatherDelayCount", weatherDelayCount.count() * 1.0f / delaysCount.count() * 100),
-      Row("carrierDelayCount", carrierDelayCount.count() * 1.0f / delaysCount.count() * 100)
+      Row("lateAircraftDelayCount", lateAircraftDelayCount.count() * 1.0f / delaysCount * 100),
+      Row("securityDelayCount", securityDelayCount.count() * 1.0f / delaysCount * 100),
+      Row("nASDelayCount", nASDelayCount.count() * 1.0f / delaysCount * 100),
+      Row("weatherDelayCount", weatherDelayCount.count() * 1.0f / delaysCount * 100),
+      Row("carrierDelayCount", carrierDelayCount.count() * 1.0f / delaysCount * 100)
     )
     val someSchema = List(
       StructField("delayType", StringType, true),

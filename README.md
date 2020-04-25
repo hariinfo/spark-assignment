@@ -28,8 +28,11 @@ There are about 118 columns in the original csv. However, not all is required fo
 We will have to do some data cleansing by dropping columns.
 
 ### What is the percentage delay types by total delays?
-Filter airlineDataDF by delay type and count by each delay type and then use the count of total delays to arrive at the percentage breakdown. <br/>
-I will make use of filter(..) by column and count() functions of dataframe for this implementation.
+Step 1: A job is created to read the parquet file from the disk<br/>
+Step 2: A job is run for the first count operation on the entire dataframe, this step took the longest<br/>
+Step 3: Multiple jobs are created when we execute the count function on the filtered dataframes <br/><br/>
+
+![DF Caching](data/problem1_with_cache.png)
 
 ### What is the min/max/average delays for an airline in a month and year?
 Group by multiple columns such as airline type, month or year and then apply aggregation function to calculate min,max, and average.<br/>

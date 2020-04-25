@@ -86,7 +86,7 @@ class Assignment2Test extends AnyFunSuite with Matchers with BeforeAndAfterEach 
     * What is the percentage delay types by total delays?
     */
   test("percentage delay types by total delays") {
-    val responseDF = Assignment2.Problem1(readAirlineAndPlane.toDF())
+    val responseDF = Assignment2.Problem1(readAirlineAndPlane.toDF().cache())
 
 
     val expectedData = Seq(

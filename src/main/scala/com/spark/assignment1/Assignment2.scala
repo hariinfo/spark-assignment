@@ -17,7 +17,7 @@ object Assignment2 {
 
   def Problem0(airlineData: DataFrame): Long = {
     println(airlineData.count())
-    return airlineData.count()
+    airlineData.count()
   }
 
   def Problem1(airlineData: DataFrame): DataFrame = {
@@ -46,7 +46,7 @@ object Assignment2 {
       StructType(someSchema)
     )
 
-    return responseDF
+    responseDF
   }
 
   /**
@@ -70,9 +70,7 @@ object Assignment2 {
     val publicOwnership = airlineDataWithOwnership.filter("ArrDel15 > 0 and ownership = 'Public'").count()
     val privateOwnership = airlineDataWithOwnership.filter("ArrDel15 > 0 and ownership = 'Private'").count()
 
-   //airlineData.withColumn("ownership", udf(col("Reporting_Airline").toString()))
-
-    return (publicOwnership, privateOwnership)
+    (publicOwnership, privateOwnership)
   }
 
   def Problem4(airlineData: DataFrame): DataFrame = {
@@ -91,7 +89,7 @@ object Assignment2 {
     val LateAircraftDelayDF = airlineData.filter("ArrDel15 > 0 and LateAircraftDelay > 0 and Origin = 'MSY'")
       .groupBy("Origin").count().limit(1)
 
-    return CarrierDelayDF.union(WeatherDelayDF).union(NASDelayDF).union(SecurityDelayDF).union(LateAircraftDelayDF)
+    CarrierDelayDF.union(WeatherDelayDF).union(NASDelayDF).union(SecurityDelayDF).union(LateAircraftDelayDF)
   }
 
   def Problem5(modernFleet: DataFrame, legacyFleet: DataFrame): (Long, Long) = {
@@ -99,7 +97,7 @@ object Assignment2 {
                           .select(col("ArrDel15")).count()
     val legacyFleetDelay = legacyFleet.where("ArrDel15 > 0 and CarrierDelay > 0")
                           .count()
-    return (modernFleetDelay, legacyFleetDelay)
+    (modernFleetDelay, legacyFleetDelay)
   }
 
 
@@ -113,9 +111,9 @@ object Assignment2 {
       row.equalsIgnoreCase("AA") ||
       row.equalsIgnoreCase("UA") ||
       row.equalsIgnoreCase("WN"))
-      return "Public"
+      "Public"
     else //All other airline codes are privately managed
-      return "Private"
+      "Private"
   }
 
 }

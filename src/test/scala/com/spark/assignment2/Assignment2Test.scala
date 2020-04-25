@@ -1,5 +1,7 @@
 package com.spark.assignment2
 
+
+
 import org.apache.spark.sql.{DataFrame, Dataset, Encoder, Encoders, Row, SaveMode, SparkSession}
 
 import scala.concurrent.duration._
@@ -14,6 +16,8 @@ import com.spark.assignment1.Assignment2
 import com.github.mrpowers.spark.fast.tests.DataFrameComparer
 import org.apache.spark.sql.functions.{col, lit, to_timestamp}
 import org.apache.spark.sql.types.{BooleanType, FloatType, IntegerType, LongType, StringType, StructField, StructType}
+
+import scala.reflect.io.File
 
 class Assignment2Test extends AnyFunSuite with Matchers with BeforeAndAfterEach with DataFrameComparer with BeforeAndAfterAll {
 
@@ -39,18 +43,6 @@ class Assignment2Test extends AnyFunSuite with Matchers with BeforeAndAfterEach 
   val csvReadOptions =
     Map("inferSchema" -> true.toString, "header" -> true.toString)
   //TODO: Add Caching
-  implicit val airlineEncoder: Encoder[Airline] = Encoders.product[Airline]
-  implicit val carrierEncoder: Encoder[Carrier] = Encoders.product[Carrier]
-  implicit val planeEncoder: Encoder[Plane] = Encoders.product[Plane]
-
-  def airlineDataDF: DataFrame = spark.read.options(csvReadOptions).csv(AIRLINE_DATA_CSV_PATH)
-  def carrierDataDF: DataFrame = spark.read.options(csvReadOptions).csv(CARRIERS_DATA_CSV_PATH)
-  def planeDataDF: DataFrame = spark.read.option("header", "true")
-    .option("treatEmptyValuesAsNulls", "true")
-    .option("inferSchema", "true")
-    .option("timestampFormat", "MM/DD/YYYY")
-    .option("mode", "DROPMALFORMED")
-    .csv(PLANE_DATA_CSV_PATH)
 
   /**
     * Keep the Spark Context running so the Spark UI can be viewed after the test has completed.
@@ -64,15 +56,27 @@ class Assignment2Test extends AnyFunSuite with Matchers with BeforeAndAfterEach 
   }
 
   override def beforeAll() {
-    //Combine the dataframe and create a parquet of combined data
-    //partition by airline
-    val planeDataMod = planeDataDF.withColumnRenamed("tailnum", "Tail_Number").withColumnRenamed("year", "ManYear")
-    val planeDataDFMod = planeDataMod.withColumn("issueDate", to_timestamp(col("issue_date"), "MM/DD/YYYY"))
-    val planeDataCombined = airlineDataDF.join(planeDataDFMod, Seq("Tail_Number"), "left_outer")
+    //Skip the parquet file creation logic if it already exists
+    if (!File(AIRLINE_PLANE_DATA_PARQUET_PATH).exists){
+      def airlineDataDF: DataFrame = spark.read.options(csvReadOptions).csv(AIRLINE_DATA_CSV_PATH)
+      def carrierDataDF: DataFrame = spark.read.options(csvReadOptions).csv(CARRIERS_DATA_CSV_PATH)
+      def planeDataDF: DataFrame = spark.read.option("header", "true")
+        .option("treatEmptyValuesAsNulls", "true")
+        .option("inferSchema", "true")
+        .option("timestampFormat", "MM/DD/YYYY")
+        .option("mode", "DROPMALFORMED")
+        .csv(PLANE_DATA_CSV_PATH)
 
-    planeDataCombined.write.mode(SaveMode.Overwrite)
-      .partitionBy("Reporting_Airline")
-      .parquet(AIRLINE_PLANE_DATA_PARQUET_PATH)
+      //Combine the dataframe and create a parquet of combined data
+      //partition by airline
+      val planeDataMod = planeDataDF.withColumnRenamed("tailnum", "Tail_Number").withColumnRenamed("year", "ManYear")
+      val planeDataDFMod = planeDataMod.withColumn("issueDate", to_timestamp(col("issue_date"), "MM/DD/YYYY"))
+      val planeDataCombined = airlineDataDF.join(planeDataDFMod, Seq("Tail_Number"), "left_outer")
+
+      planeDataCombined.write.mode(SaveMode.Overwrite)
+        .partitionBy("Reporting_Airline")
+        .parquet(AIRLINE_PLANE_DATA_PARQUET_PATH)
+    }
   }
 
   /**

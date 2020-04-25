@@ -80,7 +80,8 @@ class Assignment2Test extends AnyFunSuite with Matchers with BeforeAndAfterEach 
   }
 
   /**
-    * Check the record count
+    * This test performs sanity check on the data before
+    * executing the tests related to business queries
     */
   test("Select count") {
     Assignment2.Problem0(readAirlineAndPlane.toDF()) must equal(835293)

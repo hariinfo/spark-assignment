@@ -39,14 +39,10 @@ Group by multiple columns such as airline type, month or year and then apply agg
 I will make use of groupBy(..,..) delay type and month/year columns and agg(..) shall be used to generate min, max, average stats.
 
 ### Did privately managed airlines perform better than publicly traded ones?
-Reporting_Airline from airline performance dataframe should be used to join with carriers dataframe.
-Introduce a new column with a flag to indicate private/public airline.
-Group the data based on the airline code and ownership type (public/private)
-Generate the ratio of delays by public vs privately traded airlines.
 
-withColumn(..) shall be used to add a new column based on certain logic to determine public/private airline
-groupBy(..,..) shall be used to group the records based on multiple columns and finally
-agg(..) shall be used to generate min, max, average stats.
+I have utilized the UDF (user defined function) to generate a new column "ownership" based on a custom function airline_ownership(..) <br/>
+A filter(..) operation is then applied to filter by ownership = 'Public' or ownership = 'Private'.
+Finally, a count is done on the filtered dataset to compare delay counts.
 
 ### What delay type is most common at each airport?
 Filter airlineDataDF by airport and then group by delay type to count delay types for each airport
@@ -58,7 +54,6 @@ Step 2: A job is run for the first count operation after the filter query on the
 Step 3: Step 2 is repeated for the second dataframe<br/><br/>
 ![DF Caching](data/problem5_with_cache.png)
 
-I have utilized the UDF (user defined function) to generate a new column "ownership" based on a custom function airline_ownership(..)
 
 ## Code Overview
 

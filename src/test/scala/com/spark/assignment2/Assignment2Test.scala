@@ -180,13 +180,14 @@ class Assignment2Test extends AnyFunSuite with Matchers with BeforeAndAfterEach 
     *Did airlines with modernized fleet perform better?
     */
   test("Did airlines with modernized fleet perform better") {
-    //val cachedAirlineData = readAirlineAndPlane().toDF().cache()
+   // val cachedAirlineData = readAirlineAndPlane().toDF().cache()
+
 
     val result = Assignment2.Problem5(
-      cachedAirlineData.filter(col("ManYear")
+              readAirlineAndPlane().toDF().filter(col("ManYear")
                 .gt(lit("2000")) and col("ArrDel15")
                 .notEqual(0)),
-      cachedAirlineData.filter(col("ManYear")
+              readAirlineAndPlane().toDF().filter(col("ManYear")
                 .lt(lit("2000")) and col("ArrDel15")
                 .notEqual(0))
               )

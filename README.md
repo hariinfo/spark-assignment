@@ -50,10 +50,12 @@ Filter airlineDataDF by airport and then group by delay type to count delay type
 I will make use of filter(..) by column and groupBy(..,..) function for this implementation.
 
 ### Did airlines with modernized fleet perform better?
-Aircraft tail number (Tail_Number) should be used to join the two data sets across airline performance and plane-data.
-The combined dataframe represents the airline performance information along with the fleet details.
-I will have to come up with a classification based on the aircraft manufacturing year to categorize new vs old fleet before performing analytics
-filter(..) - To filter the modernized fleet and then use join(..) to combine the dataframes. 
+Step 1: A job is created to read the parquet file from the disk
+Step 2: A job is run for the first count operation after the filter query on the dataframe. The job has two tasks that run in parallel to complete the task
+Step 3: Step 2 is repeated for the second dataframe
+![DF Caching](data/problem5_with_cache.png)
+
+I have utilized the UDF (user defined function) to generate a new column "ownership" based on a custom function airline_ownership(..)
 
 ## Code Overview
 

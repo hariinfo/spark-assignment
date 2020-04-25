@@ -24,10 +24,14 @@ planeDataDF - Represents the dataframe created from plane csv<br/>
 Methods indicated in the analytical questions are from this spark API
 https://spark.apache.org/docs/2.4.5/api/scala/index.html#org.apache.spark.sql.Dataset
 
-There are about 118 columns in the original csv. However, not all is required for the analysis and most of them have null values.
-We will have to do some data cleansing by dropping columns.
+All of the CSV files are read and dataframe is used to make a join across these three CSV files.
+The logic is implement in the beforeAll(..) test method. The parquet files are generated only once and re-used across all the steps.
+The parquet file is partitioned based on the airline code and hence the directory structured is fragmented based on the airline code. 
 
 ### What is the percentage delay types by total delays?
+The driver and executor process is run on the same JVM thread as the code is run in a local mode.
+This step shall be common across all tests.<br/>
+
 Step 1: A job is created to read the parquet file from the disk<br/>
 Step 2: A job is run for the first count operation on the entire dataframe, this step took the longest<br/>
 Step 3: Multiple jobs are created when we execute the count function on the filtered dataframes <br/><br/>
@@ -39,10 +43,10 @@ Group by multiple columns such as airline type, month or year and then apply agg
 I will make use of groupBy(..,..) delay type and month/year columns and agg(..) shall be used to generate min, max, average stats.
 
 ### Did privately managed airlines perform better than publicly traded ones?
-
 I have utilized the UDF (user defined function) to generate a new column "ownership" based on a custom function airline_ownership(..) <br/>
 A filter(..) operation is then applied to filter by ownership = 'Public' or ownership = 'Private'.
 Finally, a count is done on the filtered dataset to compare delay counts.
+Since, spark DataFrame transformations are immutable, the withColumn function results in creation of a new dataframe airlineDataWithOwnership with the new column "ownership".
 
 ### What delay type is most common at each airport?
 Filter airlineDataDF by airport and then group by delay type to count delay types for each airport

@@ -18,7 +18,7 @@ class Assignment2Test extends AnyFunSuite with Matchers with BeforeAndAfterEach 
   val PLANE_DATA_CSV_PATH = "data/plane-data.csv"
 
   val AIRLINE_PLANE_DATA_PARQUET_PATH ="airline_and_plane/joined.parquet"
-  val BLOCK_ON_COMPLETION = false;
+  val BLOCK_ON_COMPLETION = true;
 
   /**
     * Create a SparkSession that runs locally on our laptop.

@@ -7,7 +7,6 @@ import org.apache.spark.sql.functions._
 import org.apache.spark.sql.types.{FloatType, StringType, StructField, StructType}
 import org.apache.spark.sql.SparkSession
 
-
 object Assignment2 {
 
   private val timestampFormat: DateTimeFormatter = DateTimeFormatter.ofPattern("M/d/yyyy H:mm")
@@ -53,8 +52,12 @@ object Assignment2 {
     * @return
     */
   def Problem2(airlineData: DataFrame): DataFrame = {
-    val data = airlineData.filter("ArrDel15 > 0 and Reporting_Airline = 'DL'").orderBy("FlightDate")
-      .groupBy("Reporting_Airline", "FlightDate").count().limit(4)
+    val data = airlineData
+      .filter("ArrDel15 > 0 and Reporting_Airline = 'DL'")
+      .orderBy("FlightDate")
+      .groupBy("Reporting_Airline", "FlightDate")
+      .count()
+      .limit(4)
     return data
   }
 
@@ -62,7 +65,8 @@ object Assignment2 {
     //Declare the UDF
     val spark = SparkSession.builder().appName("udfTest").master("local").getOrCreate()
     spark.udf.register("airline_ownership", airline_ownership _)
-    val airlineDataWithOwnership = airlineData.withColumn("ownership", callUDF("airline_ownership", col("Reporting_Airline")))
+    val airlineDataWithOwnership =
+      airlineData.withColumn("ownership", callUDF("airline_ownership", col("Reporting_Airline")))
     val publicOwnership = airlineDataWithOwnership.filter("ArrDel15 > 0 and ownership = 'Public'").count()
     val privateOwnership = airlineDataWithOwnership.filter("ArrDel15 > 0 and ownership = 'Private'").count()
 
@@ -70,33 +74,29 @@ object Assignment2 {
   }
 
   def Problem4(airlineData: DataFrame): DataFrame = {
-    val CarrierDelayDF = airlineData.filter("ArrDel15 > 0 and CarrierDelay > 0 and Origin = 'MSY'")
-      .groupBy("Origin").count().limit(1)
+    val CarrierDelayDF =
+      airlineData.filter("ArrDel15 > 0 and CarrierDelay > 0 and Origin = 'MSY'").groupBy("Origin").count().limit(1)
 
-    val WeatherDelayDF = airlineData.filter("ArrDel15 > 0 and WeatherDelay > 0 and Origin = 'MSY'")
-      .groupBy("Origin").count().limit(1)
+    val WeatherDelayDF =
+      airlineData.filter("ArrDel15 > 0 and WeatherDelay > 0 and Origin = 'MSY'").groupBy("Origin").count().limit(1)
 
-    val NASDelayDF = airlineData.filter("ArrDel15 > 0 and NASDelay > 0 and Origin = 'MSY'")
-      .groupBy("Origin").count().limit(1)
+    val NASDelayDF =
+      airlineData.filter("ArrDel15 > 0 and NASDelay > 0 and Origin = 'MSY'").groupBy("Origin").count().limit(1)
 
-    val SecurityDelayDF = airlineData.filter("ArrDel15 > 0 and SecurityDelay > 0 and Origin = 'MSY'")
-      .groupBy("Origin").count().limit(1)
+    val SecurityDelayDF =
+      airlineData.filter("ArrDel15 > 0 and SecurityDelay > 0 and Origin = 'MSY'").groupBy("Origin").count().limit(1)
 
-    val LateAircraftDelayDF = airlineData.filter("ArrDel15 > 0 and LateAircraftDelay > 0 and Origin = 'MSY'")
-      .groupBy("Origin").count().limit(1)
+    val LateAircraftDelayDF =
+      airlineData.filter("ArrDel15 > 0 and LateAircraftDelay > 0 and Origin = 'MSY'").groupBy("Origin").count().limit(1)
 
     CarrierDelayDF.union(WeatherDelayDF).union(NASDelayDF).union(SecurityDelayDF).union(LateAircraftDelayDF)
   }
 
   def Problem5(modernFleet: DataFrame, legacyFleet: DataFrame): (Long, Long) = {
-    val modernFleetDelay = modernFleet.where("ArrDel15 > 0 and CarrierDelay > 0")
-                          .select(col("ArrDel15")).count()
-    val legacyFleetDelay = legacyFleet.where("ArrDel15 > 0 and CarrierDelay > 0")
-                          .count()
+    val modernFleetDelay = modernFleet.where("ArrDel15 > 0 and CarrierDelay > 0").select(col("ArrDel15")).count()
+    val legacyFleetDelay = legacyFleet.where("ArrDel15 > 0 and CarrierDelay > 0").count()
     (modernFleetDelay, legacyFleetDelay)
   }
-
-
 
   // Helper function to parse the timestamp format used in the trip dataset.
   private def parseTimestamp(timestamp: String) = LocalDateTime.from(timestampFormat.parse(timestamp))
@@ -104,9 +104,9 @@ object Assignment2 {
   private def airline_ownership(row: String): String = {
     //Delta, united, American Airlines and SouthWest airlines are publicly traded
     if (row.equalsIgnoreCase("DL") ||
-      row.equalsIgnoreCase("AA") ||
-      row.equalsIgnoreCase("UA") ||
-      row.equalsIgnoreCase("WN"))
+        row.equalsIgnoreCase("AA") ||
+        row.equalsIgnoreCase("UA") ||
+        row.equalsIgnoreCase("WN"))
       "Public"
     else //All other airline codes are privately managed
       "Private"

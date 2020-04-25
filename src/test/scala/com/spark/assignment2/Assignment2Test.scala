@@ -1,22 +1,14 @@
 package com.spark.assignment2
 
-
-
-import org.apache.spark.sql.{DataFrame, Dataset, Encoder, Encoders, Row, SaveMode, SparkSession}
-
+import org.apache.spark.sql.{DataFrame, Row, SaveMode, SparkSession}
 import scala.concurrent.duration._
 import org.scalatest.{BeforeAndAfterAll, BeforeAndAfterEach}
 import org.scalatest.funsuite.AnyFunSuite
 import org.scalatest.matchers.must.Matchers
-import org.scalatest.matchers.should._
-import com.spark.assignment1.Airline
-import com.spark.assignment1.Carrier
-import com.spark.assignment1.Plane
 import com.spark.assignment1.Assignment2
 import com.github.mrpowers.spark.fast.tests.DataFrameComparer
 import org.apache.spark.sql.functions.{col, lit, to_timestamp}
-import org.apache.spark.sql.types.{BooleanType, FloatType, IntegerType, LongType, StringType, StructField, StructType}
-
+import org.apache.spark.sql.types.{FloatType, LongType, StringType, StructField, StructType}
 import scala.reflect.io.File
 
 class Assignment2Test extends AnyFunSuite with Matchers with BeforeAndAfterEach with DataFrameComparer with BeforeAndAfterAll {
@@ -26,7 +18,7 @@ class Assignment2Test extends AnyFunSuite with Matchers with BeforeAndAfterEach 
   val PLANE_DATA_CSV_PATH = "data/plane-data.csv"
 
   val AIRLINE_PLANE_DATA_PARQUET_PATH ="airline_and_plane/joined.parquet"
-  val BLOCK_ON_COMPLETION = true;
+  val BLOCK_ON_COMPLETION = false;
 
   /**
     * Create a SparkSession that runs locally on our laptop.

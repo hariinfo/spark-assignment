@@ -1,13 +1,10 @@
 package com.spark.assignment1
 
-import org.apache.spark.sql.{DataFrame, Dataset, Row, SaveMode}
-import java.time.{Duration, LocalDateTime}
+import org.apache.spark.sql.{DataFrame, Row}
+import java.time.{LocalDateTime}
 import java.time.format.DateTimeFormatter
-
-import scala.collection.{immutable, mutable}
-import org.apache.spark.sql.types._
 import org.apache.spark.sql.functions._
-import org.apache.spark.sql.types.{BooleanType, FloatType, IntegerType, LongType, StringType, StructField, StructType}
+import org.apache.spark.sql.types.{FloatType, StringType, StructField, StructType}
 import org.apache.spark.sql.SparkSession
 
 
@@ -64,7 +61,6 @@ object Assignment2 {
   def Problem3(airlineData: DataFrame): (Long, Long) = {
     //Declare the UDF
     val spark = SparkSession.builder().appName("udfTest").master("local").getOrCreate()
-    import spark.implicits._
     spark.udf.register("airline_ownership", airline_ownership _)
     val airlineDataWithOwnership = airlineData.withColumn("ownership", callUDF("airline_ownership", col("Reporting_Airline")))
     val publicOwnership = airlineDataWithOwnership.filter("ArrDel15 > 0 and ownership = 'Public'").count()

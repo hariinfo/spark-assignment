@@ -58,8 +58,6 @@ object Assignment2 {
   def Problem2(airlineData: DataFrame): DataFrame = {
     val data = airlineData.filter("ArrDel15 > 0 and Reporting_Airline = 'DL'").orderBy("FlightDate")
       .groupBy("Reporting_Airline", "FlightDate").count().limit(4)
-
-    data.show()
     return data
   }
 
@@ -92,14 +90,6 @@ object Assignment2 {
 
     val LateAircraftDelayDF = airlineData.filter("ArrDel15 > 0 and LateAircraftDelay > 0 and Origin = 'MSY'")
       .groupBy("Origin").count().limit(1)
-
-    CarrierDelayDF.show()
-    WeatherDelayDF.show()
-    NASDelayDF.show()
-    SecurityDelayDF.show()
-    LateAircraftDelayDF.show()
-
-    CarrierDelayDF.union(WeatherDelayDF).union(NASDelayDF).union(SecurityDelayDF).union(LateAircraftDelayDF).show()
 
     return CarrierDelayDF.union(WeatherDelayDF).union(NASDelayDF).union(SecurityDelayDF).union(LateAircraftDelayDF)
   }

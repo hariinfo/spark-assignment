@@ -118,8 +118,7 @@ class Assignment2Test extends AnyFunSuite with Matchers with BeforeAndAfterEach 
     * What is the min/max/average delays for an airline in a month and year?
     */
   test("min/max/average delays for an airline in a month and year") {
-    val response = Assignment2.Problem2(readAirlineAndPlane.toDF())
-    println(response.schema)
+    val responseDF = Assignment2.Problem2(readAirlineAndPlane.toDF())
     val expectedData = Seq(
       Row("DL", "1/1/2019", 114L),
       Row("DL", "1/10/2019", 249L),
@@ -137,9 +136,7 @@ class Assignment2Test extends AnyFunSuite with Matchers with BeforeAndAfterEach 
       spark.sparkContext.parallelize(expectedData),
       StructType(expectedSchema)
     )
-
-    assertSmallDataFrameEquality(expectedDF, response)
-
+    assertSmallDataFrameEquality(expectedDF, responseDF)
   }
 
   /**
@@ -154,11 +151,7 @@ class Assignment2Test extends AnyFunSuite with Matchers with BeforeAndAfterEach 
     * What delay type is most common at each airport?
     */
   test("Delay type common at each airport") {
-
     val response = Assignment2.Problem4(readAirlineAndPlane().toDF())
-
-
-    println(response.schema)
     val expectedData = Seq(
       Row("MSY", 598L),
       Row("MSY", 25L),
@@ -166,19 +159,15 @@ class Assignment2Test extends AnyFunSuite with Matchers with BeforeAndAfterEach 
       Row("MSY", 1L),
       Row("MSY", 752L)
     )
-
     val expectedSchema = List(
       StructField("Origin", StringType, true),
       StructField("count", LongType, false)
     )
-
     val expectedDF = spark.createDataFrame(
       spark.sparkContext.parallelize(expectedData),
       StructType(expectedSchema)
     )
-
     assertSmallDataFrameEquality(expectedDF, response)
-
   }
 
   /**
@@ -186,8 +175,6 @@ class Assignment2Test extends AnyFunSuite with Matchers with BeforeAndAfterEach 
     */
   test("Did airlines with modernized fleet perform better") {
    // val cachedAirlineData = readAirlineAndPlane().toDF().cache()
-
-
     val result = Assignment2.Problem5(
               readAirlineAndPlane().toDF().filter(col("ManYear")
                 .gt(lit("2000")) and col("ArrDel15")

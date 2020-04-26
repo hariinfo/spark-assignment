@@ -18,7 +18,6 @@ object Assignment2 {
     * @return
     */
   def Problem0(airlineData: DataFrame): Long = {
-    println(airlineData.count())
     airlineData.count()
   }
 
@@ -28,7 +27,6 @@ object Assignment2 {
     * @return
     */
   def Problem1(airlineData: DataFrame): DataFrame = {
-
     val delaysCount = airlineData.filter(airlineData.col("ArrDel15").gt(0)).count()
     val lateAircraftDelayCount = airlineData.filter(airlineData.col("LateAircraftDelay").gt(0)).toDF()
     val securityDelayCount = airlineData.filter(airlineData.col("SecurityDelay").gt(0)).toDF()
@@ -85,7 +83,6 @@ object Assignment2 {
       airlineData.withColumn("ownership", callUDF("airline_ownership", col("Reporting_Airline")))
     val publicOwnership = airlineDataWithOwnership.filter("ArrDel15 > 0 and ownership = 'Public'").count()
     val privateOwnership = airlineDataWithOwnership.filter("ArrDel15 > 0 and ownership = 'Private'").count()
-
     (publicOwnership, privateOwnership)
   }
 

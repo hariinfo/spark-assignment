@@ -11,11 +11,22 @@ object Assignment2 {
 
   private val timestampFormat: DateTimeFormatter = DateTimeFormatter.ofPattern("M/d/yyyy H:mm")
 
+  /**
+    * Test the setup
+    *   Record count match
+    * @param airlineData
+    * @return
+    */
   def Problem0(airlineData: DataFrame): Long = {
     println(airlineData.count())
     airlineData.count()
   }
 
+  /**
+    *
+    * @param airlineData
+    * @return
+    */
   def Problem1(airlineData: DataFrame): DataFrame = {
 
     val delaysCount = airlineData.filter(airlineData.col("ArrDel15").gt(0)).count()
@@ -61,6 +72,11 @@ object Assignment2 {
     return data
   }
 
+  /**
+    *
+    * @param airlineData
+    * @return
+    */
   def Problem3(airlineData: DataFrame): (Long, Long) = {
     //Declare the UDF
     val spark = SparkSession.builder().appName("udfTest").master("local").getOrCreate()
@@ -73,6 +89,11 @@ object Assignment2 {
     (publicOwnership, privateOwnership)
   }
 
+  /**
+    *
+    * @param airlineData
+    * @return
+    */
   def Problem4(airlineData: DataFrame): DataFrame = {
     val CarrierDelayDF =
       airlineData.filter("ArrDel15 > 0 and CarrierDelay > 0 and Origin = 'MSY'").groupBy("Origin").count().limit(1)
@@ -98,15 +119,16 @@ object Assignment2 {
     (modernFleetDelay, legacyFleetDelay)
   }
 
-  // Helper function to parse the timestamp format used in the trip dataset.
-  private def parseTimestamp(timestamp: String) = LocalDateTime.from(timestampFormat.parse(timestamp))
-
+/**
+  * UDF to add a new column for ownership type
+ */
   private def airline_ownership(row: String): String = {
-    //Delta, united, American Airlines and SouthWest airlines are publicly traded
+    //Delta, united, American Airlines, SouthWest airlines, and Jet blue are publicly traded
     if (row.equalsIgnoreCase("DL") ||
         row.equalsIgnoreCase("AA") ||
         row.equalsIgnoreCase("UA") ||
-        row.equalsIgnoreCase("WN"))
+        row.equalsIgnoreCase("WN") ||
+        row.equalsIgnoreCase("B6") )
       "Public"
     else //All other airline codes are privately managed
       "Private"

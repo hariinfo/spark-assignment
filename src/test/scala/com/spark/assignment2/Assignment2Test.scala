@@ -18,7 +18,7 @@ class Assignment2Test extends AnyFunSuite with Matchers with BeforeAndAfterEach 
   val PLANE_DATA_CSV_PATH = "data/plane-data.csv"
 
   val AIRLINE_PLANE_DATA_PARQUET_PATH ="airline_and_plane/joined.parquet"
-  val BLOCK_ON_COMPLETION = true;
+  val BLOCK_ON_COMPLETION = false;
 
   /**
     * Create a SparkSession that runs locally on our laptop.
@@ -136,7 +136,7 @@ class Assignment2Test extends AnyFunSuite with Matchers with BeforeAndAfterEach 
     */
   test("public vs private airlines") {
     val result = Assignment2.Problem3(readAirlineAndPlane().toDF())
-    result must equal((108085,59803))
+    result must equal((114393,53495))
   }
 
   /**

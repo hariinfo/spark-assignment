@@ -24,10 +24,14 @@ planeDataDF - Represents the dataframe created from plane csv<br/>
 Methods indicated in the analytical questions are from this spark API
 https://spark.apache.org/docs/2.4.5/api/scala/index.html#org.apache.spark.sql.Dataset
 
-All of the CSV files are read and dataframe is used to make a join across these three CSV files.
-The logic is implement in the beforeAll(..) test method. The parquet files are generated only once and re-used across all the steps.
+All of the CSV files are read and dataframe is used to make a equi-join across these three dataframes using the given column name.
+The logic is implemented in the beforeAll(..) test method. The parquet files are generated only once and re-used across all the steps.
 The parquet file is partitioned based on the airline code and hence the directory structured is fragmented based on the airline code. 
 
+For every test execution, we first read the parquet file from the disk.
+Internally, Spark parallelize operation generates the first RDD,  ParallelCollectionRDD.
+Finally, a MapPartiionsRDD is created by using mapParitions transformation.
+![DF Caching](data/problem_1.png)
 ### What is the percentage delay types by total delays?
 The driver and executor process is run on the same JVM thread as the code is run in a local mode.
 This step shall be common across all tests.<br/>
@@ -40,7 +44,8 @@ Step 3: Multiple jobs are created when we execute the count function on the filt
 
 ### What is the min/max/average delays for an airline in a month and year?
 Group by multiple columns such as airline type, month or year and then apply aggregation function to calculate min,max, and average.<br/>
-I will make use of groupBy(..,..) delay type and month/year columns and agg(..) shall be used to generate min, max, average stats.
+filter(..) function is used to first filter the datasets that represent delayed flights for delta airlines <br/>
+groupBy(..,..) is done on reporting airline and flight date.
 
 ### Did privately managed airlines perform better than publicly traded ones?
 I have utilized the UDF (user defined function) to generate a new column "ownership" based on a custom function airline_ownership(..) <br/>

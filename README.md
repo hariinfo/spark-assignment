@@ -99,7 +99,20 @@ In Stage 2, shuffledRDD
 In stage 12, we are doing an union of all the dataframes ( as shown in the screenshot above)
 
 ### Did airlines with modernized fleet perform better?
+- Usage:
+For the purposes of this analysis, Airline with manufacturing year less than 2000 is considered legacy and anything after that is modern.
+The filtered DataFrame based on the manufacturing year is used for the comparison.
+We then use a where condition to select the records that have a delay and delay type of carrier.
+Finally a count() action is performed over these DataFrames to do a comparison.
+
+```sql
+ArrDel15 > 0 and CarrierDelay > 0
+```
+
 - Spark Internals:
+![DF Caching](data/problem5_pic.png)
+In Stage 1, FileScanRDD -> MapPartitionsRDD
+In Stage 2, ShuffledRowRDD -> MapPartitionsRDD
 
 Step 1: A job is created to read the parquet file from the disk<br/>
 Step 2: A job is run for the first count operation after the filter query on the dataframe. The job has two tasks that run in parallel to complete the task<br/>

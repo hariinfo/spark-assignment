@@ -114,7 +114,7 @@ object Assignment2 {
   }
 
   def Problem5(modernFleet: DataFrame, legacyFleet: DataFrame): (Long, Long) = {
-    val modernFleetDelay = modernFleet.where("ArrDel15 > 0 and CarrierDelay > 0").select(col("ArrDel15")).count()
+    val modernFleetDelay = modernFleet.where("ArrDel15 > 0 and CarrierDelay > 0").count()
     val legacyFleetDelay = legacyFleet.where("ArrDel15 > 0 and CarrierDelay > 0").count()
     (modernFleetDelay, legacyFleetDelay)
   }

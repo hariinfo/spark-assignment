@@ -144,6 +144,7 @@ class Assignment2Test extends AnyFunSuite with Matchers with BeforeAndAfterEach 
     */
   test("Delay type common at each airport") {
     val response = Assignment2.Problem4(readAirlineAndPlane().toDF())
+
     val expectedData = Seq(
       Row("MSY", 598L),
       Row("MSY", 25L),
@@ -160,6 +161,8 @@ class Assignment2Test extends AnyFunSuite with Matchers with BeforeAndAfterEach 
       StructType(expectedSchema)
     )
     assertSmallDataFrameEquality(expectedDF, response)
+
+
   }
 
   /**

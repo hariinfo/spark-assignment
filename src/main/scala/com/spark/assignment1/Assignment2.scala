@@ -83,6 +83,8 @@ object Assignment2 {
       airlineData.withColumn("ownership", callUDF("airline_ownership", col("Reporting_Airline")))
     val publicOwnership = airlineDataWithOwnership.filter("ArrDel15 > 0 and ownership = 'Public'").count()
     val privateOwnership = airlineDataWithOwnership.filter("ArrDel15 > 0 and ownership = 'Private'").count()
+    println("------------------------------------------------>>>>>>")
+    println(airlineDataWithOwnership.explain())
     (publicOwnership, privateOwnership)
   }
 
@@ -94,7 +96,8 @@ object Assignment2 {
   def Problem4(airlineData: DataFrame): DataFrame = {
     val CarrierDelayDF =
       airlineData.filter("ArrDel15 > 0 and CarrierDelay > 0 and Origin = 'MSY'").groupBy("Origin").count().limit(1)
-
+    println("------------------------------------------------>>>>>>")
+    println(CarrierDelayDF.explain())
     val WeatherDelayDF =
       airlineData.filter("ArrDel15 > 0 and WeatherDelay > 0 and Origin = 'MSY'").groupBy("Origin").count().limit(1)
 

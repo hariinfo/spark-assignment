@@ -33,8 +33,11 @@ Internally, Spark parallelize operation generates the first RDD,  ParallelCollec
 Finally, a MapPartiionsRDD is created by using mapParitions transformation.
 ![DF Caching](data/problem_1.png)
 ### What is the percentage delay types by total delays?
+- Usage:
 The driver and executor process is run on the same JVM thread as the code is run in a local mode.
 This step shall be common across all tests.<br/>
+
+- Spark Internals:
 
 Step 1: A job is created to read the parquet file from the disk<br/>
 Step 2: A job is run for the first count operation on the entire dataframe, this step took the longest<br/>
@@ -43,21 +46,36 @@ Step 3: Multiple jobs are created when we execute the count function on the filt
 ![DF Caching](data/problem1_with_cache.png)
 
 ### What is the min/max/average delays for an airline in a month and year?
+- Usage:
 Group by multiple columns such as airline type, month or year and then apply aggregation function to calculate min,max, and average.<br/>
 filter(..) function is used to first filter the datasets that represent delayed flights for delta airlines <br/>
 groupBy(..,..) is done on reporting airline and flight date.
 
 ### Did privately managed airlines perform better than publicly traded ones?
+- Usage:
+
 I have utilized the UDF (user defined function) to generate a new column "ownership" based on a custom function airline_ownership(..) <br/>
 A filter(..) operation is then applied to filter by ownership = 'Public' or ownership = 'Private'.
 Finally, a count is done on the filtered dataset to compare delay counts.
 Since, spark DataFrame transformations are immutable, the withColumn function results in creation of a new dataframe airlineDataWithOwnership with the new column "ownership".
+
+- Spark Internals:
+
+![DF Caching](data/problem3_pic.png)
+
+Two stages are created for each filter and count() operation on the dataframe :
+In Stage 1, FileScanRDD, which is an RDD of internal binary rows is created, the output of this results in the creation of MapPartitionsRDD. 
+In stage2, a shuffledRDD is created to shuffle data over the cluster as we do a filter transformation on the dataframe
+Since we use filter here, it is a narrow narrow transformation and hence data is not shuffled from one partition to another.
+Finally, a count() function results in execution of an action and hence the actual execution of the plan takes place at this stage.
 
 ### What delay type is most common at each airport?
 Filter airlineDataDF by airport and then group by delay type to count delay types for each airport
 I will make use of filter(..) by column and groupBy(..,..) function for this implementation.
 
 ### Did airlines with modernized fleet perform better?
+- Spark Internals:
+
 Step 1: A job is created to read the parquet file from the disk<br/>
 Step 2: A job is run for the first count operation after the filter query on the dataframe. The job has two tasks that run in parallel to complete the task<br/>
 Step 3: Step 2 is repeated for the second dataframe<br/><br/>

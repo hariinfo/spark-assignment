@@ -111,6 +111,7 @@ ArrDel15 > 0 and CarrierDelay > 0
 
 - Spark Internals:
 ![DF Caching](data/problem5_pic.png)
+
 In Stage 1, FileScanRDD -> MapPartitionsRDD
 In Stage 2, ShuffledRowRDD -> MapPartitionsRDD
 

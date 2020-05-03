@@ -25,7 +25,7 @@ Methods indicated in the analytical questions are from this spark API
 https://spark.apache.org/docs/2.4.5/api/scala/index.html#org.apache.spark.sql.Dataset
 
 All of the CSV files are read and dataframe is used to make a equi-join across these three dataframes using the given column name.
-The logic is implemented in the beforeAll(..) test method. The parquet files are generated only once and re-used across all the steps.
+The logic is implemented in the beforeAll(..) test method. The parquet files are generated only once and re-used across all the tests.
 The parquet file is partitioned based on the airline code and hence the directory structured is fragmented based on the airline code. 
 
 For every test execution, we first read the parquet file from the disk.
@@ -64,7 +64,9 @@ Since, spark DataFrame transformations are immutable, the withColumn function re
 ![DF Caching](data/problem3_pic.png)
 
 Two stages are created for each filter and count() operation on the dataframe :
+
 In Stage 1, FileScanRDD, which is an RDD of internal binary rows is created, the output of this results in the creation of MapPartitionsRDD. 
+
 In stage2, a shuffledRDD is created to shuffle data over the cluster as we do a filter transformation on the dataframe
 Since we use filter here, it is a narrow narrow transformation and hence data is not shuffled from one partition to another.
 Finally, a count() function results in execution of an action and hence the actual execution of the plan takes place at this stage.

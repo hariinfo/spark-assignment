@@ -73,12 +73,12 @@ Finally, a count() function results in execution of an action and hence the actu
 
 ### What delay type is most common at each airport?
 - Usage:
+
 The dataframe is filtered to create multiple dataframes based on the airline delay type. There are five different delay types:
 Carrier, Weather, NAS, Security and LateAircraft.
 Syntax to filter out the rows based on the delay type is as follows:
 NOTE: 
-CarrierDelay will be replaced with appropriate delay column for the delay type. Also, we are inlcuding an additional condition to filter out records at the MSP airport only.
-
+CarrierDelay will be replaced with appropriate delay column for the delay type. Also, we are including an additional condition to filter out records at the MSP airport only.
 After filter, a groupBy by origin column and count action returns the number of records. We finally, return the top 1 record as we are only interested in comparing the top 1 delays.
  
 ```sql
@@ -90,6 +90,13 @@ Filter airlineDataDF by airport and then group by delay type to count delay type
 I will make use of filter(..) by column and groupBy(..,..) function for this implementation.
 
 - Spark Internals:
+![DF Caching](data/problem4_pic.png)
+
+Two stages are created for each filter,groupBy operation on the dataframe :
+We will see these stages repeated 5 times as we have five such operations for the five different delay types
+In Stage 1, FileScanRDD
+In Stage 2, shuffledRDD
+In stage 12, we are doing an union of all the dataframes ( as shown in the screenshot above)
 
 ### Did airlines with modernized fleet perform better?
 - Spark Internals:

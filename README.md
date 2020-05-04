@@ -54,6 +54,13 @@ Step 3: Multiple jobs are created when we execute the count function on the filt
 
 **NOTE 3:** Since this step is repeated across all tests, I shall skip explaining the read parquet operation for subsequent  "Spark Internals"<br/>
 
+The count operation, consists of WholeStageCodegen step (as shown below), which uses the cached values. Next, it does an InMemoryTableScan (to perform filtering based filter condition in the code)
+
+![DF Caching](data/problem_1_0.png)
+
+There are 5 more jobs that repeat these steps as we filter based on different delay conditions, before performing a count.
+
+
 ### What is the min/max/average delays for an airline in a month and year?
 - Usage:
 

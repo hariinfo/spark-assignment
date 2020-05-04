@@ -27,12 +27,24 @@ object Assignment2 {
     * @return
     */
   def Problem1(airlineData: DataFrame): DataFrame = {
-    val delaysCount = airlineData.filter(airlineData.col("ArrDel15").gt(0)).count()
-    val lateAircraftDelayCount = airlineData.filter(airlineData.col("LateAircraftDelay").gt(0)).toDF()
-    val securityDelayCount = airlineData.filter(airlineData.col("SecurityDelay").gt(0)).toDF()
-    val nASDelayCount = airlineData.filter(airlineData.col("NASDelay").gt(0)).toDF()
-    val weatherDelayCount = airlineData.filter(airlineData.col("WeatherDelay").gt(0)).toDF()
-    val carrierDelayCount = airlineData.filter(airlineData.col("CarrierDelay").gt(0)).toDF()
+    val delaysCount = airlineData
+      .filter(airlineData.col("ArrDel15").gt(0))
+      .count()
+    val lateAircraftDelayCount = airlineData
+      .filter(airlineData.col("LateAircraftDelay").gt(0))
+      .toDF()
+    val securityDelayCount = airlineData
+      .filter(airlineData.col("SecurityDelay").gt(0))
+      .toDF()
+    val nASDelayCount = airlineData
+      .filter(airlineData.col("NASDelay").gt(0))
+      .toDF()
+    val weatherDelayCount = airlineData
+      .filter(airlineData.col("WeatherDelay").gt(0))
+      .toDF()
+    val carrierDelayCount = airlineData
+      .filter(airlineData.col("CarrierDelay").gt(0))
+      .toDF()
 
     val aggData = Seq(
       Row("lateAircraftDelayCount", lateAircraftDelayCount.count() * 1.0f / delaysCount * 100),
@@ -80,11 +92,14 @@ object Assignment2 {
     val spark = SparkSession.builder().appName("udfTest").master("local").getOrCreate()
     spark.udf.register("airline_ownership", airline_ownership _)
     val airlineDataWithOwnership =
-      airlineData.withColumn("ownership", callUDF("airline_ownership", col("Reporting_Airline")))
-    val publicOwnership = airlineDataWithOwnership.filter("ArrDel15 > 0 and ownership = 'Public'").count()
-    val privateOwnership = airlineDataWithOwnership.filter("ArrDel15 > 0 and ownership = 'Private'").count()
-    println("------------------------------------------------>>>>>>")
-    println(airlineDataWithOwnership.explain())
+      airlineData
+        .withColumn("ownership", callUDF("airline_ownership", col("Reporting_Airline")))
+    val publicOwnership = airlineDataWithOwnership
+      .filter("ArrDel15 > 0 and ownership = 'Public'")
+      .count()
+    val privateOwnership = airlineDataWithOwnership
+      .filter("ArrDel15 > 0 and ownership = 'Private'")
+      .count()
     (publicOwnership, privateOwnership)
   }
 
@@ -95,27 +110,53 @@ object Assignment2 {
     */
   def Problem4(airlineData: DataFrame): DataFrame = {
     val CarrierDelayDF =
-      airlineData.filter("ArrDel15 > 0 and CarrierDelay > 0 and Origin = 'MSY'").groupBy("Origin").count().limit(1)
-    println("------------------------------------------------>>>>>>")
-    println(CarrierDelayDF.explain())
+      airlineData
+        .filter("ArrDel15 > 0 and CarrierDelay > 0 and Origin = 'MSY'")
+        .groupBy("Origin")
+        .count()
+        .limit(1)
     val WeatherDelayDF =
-      airlineData.filter("ArrDel15 > 0 and WeatherDelay > 0 and Origin = 'MSY'").groupBy("Origin").count().limit(1)
+      airlineData
+        .filter("ArrDel15 > 0 and WeatherDelay > 0 and Origin = 'MSY'")
+        .groupBy("Origin")
+        .count()
+        .limit(1)
 
     val NASDelayDF =
-      airlineData.filter("ArrDel15 > 0 and NASDelay > 0 and Origin = 'MSY'").groupBy("Origin").count().limit(1)
+      airlineData
+        .filter("ArrDel15 > 0 and NASDelay > 0 and Origin = 'MSY'")
+        .groupBy("Origin")
+        .count()
+        .limit(1)
 
     val SecurityDelayDF =
-      airlineData.filter("ArrDel15 > 0 and SecurityDelay > 0 and Origin = 'MSY'").groupBy("Origin").count().limit(1)
+      airlineData
+        .filter("ArrDel15 > 0 and SecurityDelay > 0 and Origin = 'MSY'")
+        .groupBy("Origin")
+        .count()
+        .limit(1)
 
     val LateAircraftDelayDF =
-      airlineData.filter("ArrDel15 > 0 and LateAircraftDelay > 0 and Origin = 'MSY'").groupBy("Origin").count().limit(1)
+      airlineData
+        .filter("ArrDel15 > 0 and LateAircraftDelay > 0 and Origin = 'MSY'")
+        .groupBy("Origin")
+        .count()
+        .limit(1)
 
-    CarrierDelayDF.union(WeatherDelayDF).union(NASDelayDF).union(SecurityDelayDF).union(LateAircraftDelayDF)
+    CarrierDelayDF
+      .union(WeatherDelayDF)
+      .union(NASDelayDF)
+      .union(SecurityDelayDF)
+      .union(LateAircraftDelayDF)
   }
 
   def Problem5(modernFleet: DataFrame, legacyFleet: DataFrame): (Long, Long) = {
-    val modernFleetDelay = modernFleet.where("ArrDel15 > 0 and CarrierDelay > 0").count()
-    val legacyFleetDelay = legacyFleet.where("ArrDel15 > 0 and CarrierDelay > 0").count()
+    val modernFleetDelay = modernFleet
+      .where("ArrDel15 > 0 and CarrierDelay > 0")
+      .count()
+    val legacyFleetDelay = legacyFleet
+      .where("ArrDel15 > 0 and CarrierDelay > 0")
+      .count()
     (modernFleetDelay, legacyFleetDelay)
   }
 

@@ -18,7 +18,7 @@ class Assignment2Test extends AnyFunSuite with Matchers with BeforeAndAfterEach 
   val PLANE_DATA_CSV_PATH = "data/plane-data.csv"
 
   val AIRLINE_PLANE_DATA_PARQUET_PATH ="airline_and_plane/joined.parquet"
-  val BLOCK_ON_COMPLETION = true;
+  val BLOCK_ON_COMPLETION = false;
 
   /**
     * Create a SparkSession that runs locally on our laptop.
@@ -75,14 +75,14 @@ class Assignment2Test extends AnyFunSuite with Matchers with BeforeAndAfterEach 
     * This test performs sanity check on the data before
     * executing the tests related to business queries
     */
-  test("Select count") {
+  test("Sanity Check") {
     Assignment2.Problem0(readAirlineAndPlane.toDF()) must equal(835293)
   }
 
   /**
     * What is the percentage delay types by total delays?
     */
-  test("percentage delay types by total delays") {
+  test("Percentage delay types by total delays") {
     val responseDF = Assignment2.Problem1(readAirlineAndPlane.toDF().cache())
     val expectedData = Seq(
       Row("lateAircraftDelayCount", 50.19418F),
@@ -107,7 +107,7 @@ class Assignment2Test extends AnyFunSuite with Matchers with BeforeAndAfterEach 
   /**
     * What is the min/max/average delays for an airline in a month and year?
     */
-  test("min/max/average delays for an airline in a month and year") {
+  test("Min/max/average delays for an airline in a month and year") {
     val responseDF = Assignment2.Problem2(readAirlineAndPlane.toDF())
     val expectedData = Seq(
       Row("DL", "1/1/2019", 114L),
@@ -132,7 +132,7 @@ class Assignment2Test extends AnyFunSuite with Matchers with BeforeAndAfterEach 
   /**
     * Did privately managed airlines perform better than publicly traded ones?
     */
-  test("public vs private airlines") {
+  test("Public vs private airlines") {
     val result = Assignment2.Problem3(readAirlineAndPlane().toDF())
     result must equal((114393,53495))
   }

@@ -10,3 +10,10 @@ May 03, 2020 8:45:26 PM org.eclipse.lsp4j.jsonrpc.services.GenericEndpoint notif
 INFO: Unsupported notification method: $/setTraceNotification
 WARN  no build target for: C:\Users\harii\_workarea_\msse4\assignment2\spark-example\src\main\scala\com\spark\assignment1\Sample.scala
 INFO  no build target: using presentation compiler with only scala-library
+WARN  no build target for: C:\Users\harii\_workarea_\msse4\assignment2\spark-example\src\main\scala\com\spark\assignment1\Assignment2.scala
+WARN  no build target for: C:\Users\harii\_workarea_\msse4\assignment2\spark-example\src\test\scala\com\spark\assignment2\Assignment2Test.scala
+WARN  no build target for: C:\Users\harii\_workarea_\msse4\assignment2\spark-example\src\test\scala\com\spark\assignment2\Assignment2Test.scala
+WARN  no build target for: C:\Users\harii\_workarea_\msse4\assignment2\spark-example\src\test\scala\com\spark\assignment2\Assignment2Test.scala
+WARN  no build target for: C:\Users\harii\_workarea_\msse4\assignment2\spark-example\src\test\scala\com\spark\assignment2\Assignment2Test.scala
+WARN  no build target for: C:\Users\harii\_workarea_\msse4\assignment2\spark-example\src\test\scala\com\spark\assignment2\Assignment2Test.scala
+WARN  no build target for: C:\Users\harii\_workarea_\msse4\assignment2\spark-example\src\test\scala\com\spark\assignment2\Assignment2Test.scala

@@ -4,3 +4,9 @@ WARN  no build target for: C:\Users\harii\_workarea_\msse4\assignment2\spark-exa
 WARN  no build target for: C:\Users\harii\_workarea_\msse4\assignment2\spark-example\src\main\scala\com\spark\assignment1\Assignment1.scala
 INFO  no build target: using presentation compiler with only scala-library
 INFO  shutting down Metals
+INFO  started: Metals version 0.8.4 in workspace 'C:\Users\harii\_workarea_\msse4\assignment2\spark-example'
+INFO  time: initialize in 0.29s
+May 03, 2020 8:45:26 PM org.eclipse.lsp4j.jsonrpc.services.GenericEndpoint notify
+INFO: Unsupported notification method: $/setTraceNotification
+WARN  no build target for: C:\Users\harii\_workarea_\msse4\assignment2\spark-example\src\main\scala\com\spark\assignment1\Sample.scala
+INFO  no build target: using presentation compiler with only scala-library

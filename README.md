@@ -1,6 +1,8 @@
 # Spark Assignment
 Airline on-time Performance Analysis
 
+GIT Repo:
+https://github.com/hariinfo/spark-assignment
 ## Project Overview
 According to the US Federal Aviation Administration (FAA), a flight is considered delayed when it arrives 15 minutes later than its scheduled time. 
 With large amounts of flight performance data made publicly available, the assignment postulates that spark data analytics could help gain analytical insight into the causes, trends and comparisons associated with flight delays.

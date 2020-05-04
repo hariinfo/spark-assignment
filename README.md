@@ -54,7 +54,7 @@ Step 3: Multiple jobs are created when we execute the count function on the filt
 
 **NOTE 3:** Since this step is repeated across all tests, I shall skip explaining the read parquet operation for subsequent  "Spark Internals"<br/>
 
-The count operation, consists of WholeStageCodegen step (as shown below), which uses the cached values. Next, it does an InMemoryTableScan (to perform filtering based filter condition in the code)
+The count operation, consists of WholeStageCodegen step (as shown below), which uses the cached values. Next, it does an InMemoryTableScan (to perform filtering based on filter condition in the code)
 
 ![DF Caching](data/problem_1_0.png)
 
@@ -72,6 +72,12 @@ A multi column group by operation is then performed on Reporting_Airline and Fli
 Finally a Spark action is applied when we do a count and return top 4 records.
 
 - Spark Internals:
+
+![DF Caching](data/problem_2.png)
+
+Filter is a narrow transformation and hence data is not shuffled from one partition to another.
+The filter operation is followed by a multi column groupBy, which is a wide operation and hence requires mapping the data across multiple partitions.
+Finally, a count() function results in execution of an Spark action.
 
 
 ### Did privately managed airlines perform better than publicly traded ones?
@@ -169,3 +175,7 @@ or on Windows systems:
 C:\> ./sbt.bat test
 ```
 
+## Credits
+https://data-flair.training/blogs/spark-rdd-operations-transformations-actions/
+
+https://jaceklaskowski.gitbooks.io/mastering-spark-sql/

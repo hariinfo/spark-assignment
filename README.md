@@ -27,6 +27,8 @@ All of the CSV files are read and DataFrame is used to make an equi-join across 
 For every test execution, we first read the parquet file from the disk. Internally, Spark parallelizes operation generates the first RDD, ParallelCollectionRDD. Finally, a MapPartiionsRDD is created by using mapParitions transformation.<br/>
 
 ![DF Caching](data/problem_1.png)
+
+**NOTE:** Since this step is shared across all tests, I shall skip repeating the same while explaining the "Spark Internals" for every test. <br/>
 ### What is the percentage delay types by total delays?
 - Usage:
 The driver and executor process is run on the same JVM thread as the code is run in a local mode.

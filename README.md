@@ -29,7 +29,12 @@ For every test execution, we first read the parquet file from the disk. Internal
 ![DF Caching](data/problem_1.png)
 
 **NOTE:** Since this step is shared across all tests, I shall skip repeating the same while explaining the "Spark Internals" for every test. <br/>
-### What is the percentage delay types by total delays?
+### Problem 0: Compare the record count of CSV and parquet
+This test is used to ensure we are not missing any records after read and transformation from CSV -> DataFrames -> parquet file.
+
+This test basically ensures the implementation in beforeAll(..) method is working as expected.
+
+### Problem 1: What is the percentage delay types by total delays?
 - Usage:
 The driver and executor process is run on the same JVM thread as the code is run in a local mode.
 This step shall be common across all tests.<br/>

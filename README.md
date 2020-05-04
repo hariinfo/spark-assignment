@@ -64,9 +64,15 @@ There are 5 more jobs that repeat these steps as we filter based on different de
 ### What is the min/max/average delays for an airline in a month and year?
 - Usage:
 
-Group by multiple columns such as airline type, month or year and then apply aggregation function to calculate min,max, and average.<br/>
-filter(..) function is used to first filter the datasets that represent delayed flights for delta airlines <br/>
-groupBy(..,..) is done on reporting airline and flight date.
+The dataframe is first filtered when carrier is DELTA and has an arrival delay
+```sql
+ArrDel15 > 0 and Reporting_Airline = 'DL'
+```
+A multi column group by operation is then performed on Reporting_Airline and FlightDate.
+Finally a Spark action is applied when we do a count and return top 4 records.
+
+- Spark Internals:
+
 
 ### Did privately managed airlines perform better than publicly traded ones?
 - Usage:
@@ -85,7 +91,7 @@ Two stages are created for each filter and count() operation on the dataframe :
 In Stage 1, FileScanRDD, which is an RDD of internal binary rows is created, the output of this results in the creation of MapPartitionsRDD. 
 
 In stage2, a shuffledRDD is created to shuffle data over the cluster as we do a filter transformation on the dataframe
-Since we use filter here, it is a narrow narrow transformation and hence data is not shuffled from one partition to another.
+Since we use filter here, it is a narrow transformation and hence data is not shuffled from one partition to another.
 Finally, a count() function results in execution of an action and hence the actual execution of the plan takes place at this stage.
 
 ### What delay type is most common at each airport?

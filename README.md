@@ -17,20 +17,15 @@ Several data sources shall be used for this project. The primary dataset regardi
 
 
 ## Analytical questions
-All of the analytical questions are based on three dataframes that map to the three csv files described in the data overview section.<br/>
-airlineDataDF - Represents the dataframe created from airline performance csv <br/>
-carrierDataDF - Represents the dataframe created from carrier csv<br/>
-planeDataDF - Represents the dataframe created from plane csv<br/>
-Methods indicated in the analytical questions are from this spark API
-https://spark.apache.org/docs/2.4.5/api/scala/index.html#org.apache.spark.sql.Dataset
+All of the analytical questions are based on three DataFrames that map to the three CSV files described in the data overview section.<br/>
+- airlineDataDF - Represents the DataFrame created from airline performance CSV
+- carrierDataDF - Represents the DataFrame made from carrier CSV
+- planeDataDF - Represents the DataFrame created from plane CSV<br/>
 
-All of the CSV files are read and dataframe is used to make a equi-join across these three dataframes using the given column name.
-The logic is implemented in the beforeAll(..) test method. The parquet files are generated only once and re-used across all the tests.
-The parquet file is partitioned based on the airline code and hence the directory structured is fragmented based on the airline code. 
+Methods indicated in the analytical questions are from this Spark API https://spark.apache.org/docs/2.4.5/api/scala/index.html#org.apache.spark.sql.Dataset<br/>
+All of the CSV files are read and DataFrame is used to make an equi-join across these three DataFrames using the given column name. The logic is implemented in the beforeAll(..) test method. The parquet files are generated only once and re-used across all the tests. The parquet file is partitioned based on the airline code, and hence the directory structured is fragmented based on the airline code.<br/>
+For every test execution, we first read the parquet file from the disk. Internally, Spark parallelizes operation generates the first RDD, ParallelCollectionRDD. Finally, a MapPartiionsRDD is created by using mapParitions transformation.<br/>
 
-For every test execution, we first read the parquet file from the disk.
-Internally, Spark parallelize operation generates the first RDD,  ParallelCollectionRDD.
-Finally, a MapPartiionsRDD is created by using mapParitions transformation.
 ![DF Caching](data/problem_1.png)
 ### What is the percentage delay types by total delays?
 - Usage:

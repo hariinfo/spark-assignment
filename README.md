@@ -28,7 +28,9 @@ For every test execution, we first read the parquet file from the disk. Internal
 
 ![DF Caching](data/problem_1.png)
 
-**NOTE:** Since this step is shared across all tests, I shall skip repeating the same while explaining the "Spark Internals" for every test. <br/>
+**NOTE 1:** Since this step is shared across all tests, I shall skip repeating the same while explaining the "Spark Internals" for every test. <br/>
+**NOTE 2:** The driver and executor process is run on the same JVM thread as the code is run in a local mode. <br/>
+
 ### Problem 0: Compare the record count of CSV and parquet
 This test is used to ensure we are not missing any records after read and transformation from CSV -> DataFrames -> parquet file.
 
@@ -36,8 +38,11 @@ This test basically ensures the implementation in beforeAll(..) method is workin
 
 ### Problem 1: What is the percentage delay types by total delays?
 - Usage:
-The driver and executor process is run on the same JVM thread as the code is run in a local mode.
-This step shall be common across all tests.<br/>
+
+To calculate the percentage delay, a count of all records with airline delays is first calculated.
+Next, a count of airline delays with specific delay type is calculated by filtering the DataFrame with the appropriate delay type column.
+If a delay column has a value greater than zero, then it means the airline delay was because of the specific delay type.
+The percentage of delays by delay type is returned in the response as a DataFrame. Seq function is used to construct a DataFrame with the percentage delay types.
 
 - Spark Internals:
 

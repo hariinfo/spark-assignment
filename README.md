@@ -45,6 +45,7 @@ If a delay column has a value greater than zero, then it means the airline delay
 The percentage of delays by delay type is returned in the response as a DataFrame. Seq function is used to construct a DataFrame with the percentage delay types.
 
 - Spark Internals:
+
 Step 1: A job is created to read the parquet file from the disk<br/>
 Step 2: A job is run for the first count operation on the entire dataframe, this step took the longest<br/>
 Step 3: Multiple jobs are created when we execute the count function on the filtered dataframes <br/><br/>
@@ -55,6 +56,7 @@ Step 3: Multiple jobs are created when we execute the count function on the filt
 
 ### What is the min/max/average delays for an airline in a month and year?
 - Usage:
+
 Group by multiple columns such as airline type, month or year and then apply aggregation function to calculate min,max, and average.<br/>
 filter(..) function is used to first filter the datasets that represent delayed flights for delta airlines <br/>
 groupBy(..,..) is done on reporting airline and flight date.
